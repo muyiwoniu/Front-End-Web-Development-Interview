@@ -35,6 +35,7 @@ JavaScript 共有八种数据类型，分别是 Number、String、Boolean、Unde
     typeof null;                // object
     ```
     其中数组、对象、null 都会被判断为 object，其他判断都正确。
+
     2. instanceof
     instanceof 可以正确判断对象的类型，其内部运行机制是判断在其原型链中能否找到该类型的原型。
     ```
@@ -46,7 +47,8 @@ JavaScript 共有八种数据类型，分别是 Number、String、Boolean、Unde
     function (){} instanceof Function;          // true
     {} instanceof Object;                       // true
     ```
-    可以看到，instanceof 只能正确判断引用数据类型，而不能判断基本数据类型。instanceof 运算符可以用来测试一个对象在其原型链中是否存在一个构造函数的 prototype 属性
+    可以看到，instanceof 只能正确判断引用数据类型，而不能判断基本数据类型。instanceof 运算符可以用来测试一个对象在其原型链中是否存在一个构造函数的 prototype 属性。
+
     3. constructor
     ```
     (2).constructor === Number;                     // true
@@ -65,6 +67,7 @@ JavaScript 共有八种数据类型，分别是 Number、String、Boolean、Unde
     console.log(f.constructor === Fn);          // false
     console.log(f.constructor === Array);       // true
     ```
+    
     4. Object.prototype.toString.call()
     Object.prototype.toString.call() 使用 Object 对象的原型方法toString 来判断数据类型：
     ```
