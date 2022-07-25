@@ -9,7 +9,7 @@ Front-End-Web-Development-Interview
 
 欢迎提出意见，一起维护和完善这个仓库~
 
-| 试题链接 | 原题概述 | 标签分类 | 更新状态 |
+| 链接 | 概述 | 标签分类 | 更新状态 |
 |---|---|---|---|
 | [JavaScript.md](/questions/JavaScript.md) | Front End Web Development Interview JavaScript 部分 | JavaScript | 待完善 |
 | [Vue.md](/questions/Vue.md) | Front End Web Development Interview Vue 部分 | Vue | 待添加 |
