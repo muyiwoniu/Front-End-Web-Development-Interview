@@ -369,19 +369,24 @@ new 操作符的实现步骤如下：
 > (3)条件表达式：控制循环体语句是否执行。如果只包含条件表达式for循环就变成while循环。
 > (4)操作表达式：使循环趋向结束的语句。
 2. **for…in语句**
-根据key遍历
-for…in类似于增强for循环，我们可以简单理解为它适合遍历对象。
+根据 key 遍历
+for…in 类似于增强 for 循环，我们可以简单理解为它适合遍历对象。
 应用场景:遍历数组以及遍历对象的属性。
-for…in以原始插入顺序访问对象的可枚举属性，包括从原型继承而来的可枚举属性。遍历对象时会从原型上继承属性，可以用 hasOwnProperty 识别出继承属性。
-for…in用于遍历数组时，可以将数组看作对象，数组下标看作属性名，也就输出结果是数组的下标。但用for…in遍历数组时不一定会按照数组的索引顺序。
+for…in 以原始插入顺序访问对象的可枚举属性，包括从原型继承而来的可枚举属性。遍历对象时会从原型上继承属性，可以用 hasOwnProperty 识别出继承属性。
+for…in 用于遍历数组时，可以将数组看作对象，数组下标看作属性名，也就输出结果是数组的下标。但用 for…in 遍历数组时不一定会按照数组的索引顺序。
 数组遍历下标，对象遍历属性。
 3. **for…of语句**
 根据值遍历
-for…of语句是一种严格的迭代语句，用于遍历可迭代对象的元素。
-for…of语句在可迭代对象（Array，Map，Set，String，TypedArray，arguments 对象等等）上创建一个迭代循环，为每个不同属性的值执行语句。
-使用for…in循环时，获得的是数组的下标；使用for…of循环时，获得的是数组的元素值。
-for…of遍历Map时，可以获得整个键值对对象，也可以只获得键值，或者分别获得键与值。
-用for…of来遍历数据，避免了所有for…in的弊端，与forEach相比可以正确响应break，continue，return语句。
+for…of 语句是一种严格的迭代语句，用于遍历可迭代对象的元素。
+for…of 语句在可迭代对象（Array，Map，Set，String，TypedArray，arguments 对象等等）上创建一个迭代循环，为每个不同属性的值执行语句。
+使用 for…in 循环时，获得的是数组的下标；使用 for…of 循环时，获得的是数组的元素值。
+for…of 遍历 Map 时，可以获得整个键值对对象，也可以只获得键值，或者分别获得键与值。
+用 for…of 来遍历数据，避免了所有 for…in 的弊端，与 forEach 相比可以正确响应break，continue，return语句。
+for…of 虽然好用，但要注意下面的几个问题：
+- 不能直接遍历对象。对象没有实现迭代器接口，直接遍历会抛出异常。如果想遍历对象的属性，可以先通过 Object.keys() 方法获取对象的属性列表，然后再遍历。
+- 不能实现数组的赋值。for…of 遍历数组时并没有提供索引，无法直接修改数组。如果打算改变数组，建议使用其他遍历方法。
+- 不要提前修改未迭代的项目。如果你在遍历途中修改后面项的值，在之后的迭代中获取的是新的值。
+- 不要在遍历途中增删项目。如果你在遍历途中删除了未迭代的项目，会导致迭代次数的减少；如果你在遍历途中添加了新项，它们也将会被迭代。
 4. **forEach语句**
 foreach 语句是对数组的每个元素根据提供的函数执行一次。是for语句的特殊简化版本，不能完全取代for语句，但任何foreach语句都可以改写为for语句版本。
 遍历全部数据，不能通过return结束循环，消耗性能。
@@ -430,12 +435,123 @@ for 语句性能最好；能响应break, continue, return控制循环。
 
 forEach 无法响应break, continue, return控制循环。
 
-for…in 无法响应break, continue, return控制循环；for in 主要针对对象，它不仅会循环对象本身的属性，还会查找循环原型上的属性；循环的顺序不确定。
+for…in 无法响应break, continue, return控制循环；for…in 主要针对对象，它不仅会遍历对象本身的属性，还会查找遍历原型上的属性；遍历的顺序不确定。
 
-for…of 能响应break, continue, return控制循环，还能遍历map、set 等类数组，但是不能循环普通的对象
+for…of 能响应break, continue, return控制循环，还能遍历map、set 等类数组，但是不能遍历普通的对象
 
 for…of 是 ES6 新增的遍历方式，允许遍历一个含有 iterator 接口的数据结构（数组、对象等）并且返回各项的值，和 ES3 中的 for…in 的区别如下
 for…of 遍历获取的是对象的键值，for…in 获取的是对象的键名；
 for…in 会遍历对象的整个原型链，性能非常差不推荐使用，而for…of 只遍历当前对象不会遍历原型链；
 对于数组的遍历，for…in 会返回数组中所有可枚举的属性(包括原型链上可枚举的属性)，for…of 只返回数组的下标对应的属性值；
 总结：for…in 循环主要是为了遍历对象而生，不适用于遍历数组；for…of 循环可以用来遍历数组、类数组对象，字符串、Set、Map 以及 Generator 对象。
+
+### 22. 可以迭代大部分数据类型的 for…of 为什么不能遍历普通对象？怎么解决 for…of 遍历对象问题？
+我们知道，ES6 中引入 for…of 循环，很多时候用以替代 for…in 和 forEach() ，并支持新的迭代协议。for…of 允许你遍历 Array（数组）, String（字符串）, Map（映射）, Set（集合）,TypedArray(类型化数组)、arguments、NodeList对象、Generator等可迭代的数据结构等。for…of 语句在可迭代对象上创建一个迭代循环，调用自定义迭代钩子，并为每个不同属性的值执行语句。
+```
+// 普通对象
+const obj = {
+    foo: 'value1',
+    bar: 'value2'
+}
+for (const item of obj) {
+    console.log(item)
+}
+// Uncaught TypeError: obj is not iterable
+```
+能够被 for…of 正常遍历的，都需要实现一个遍历器 Iterator。而数组、字符串、Set、Map结构，早就内置好了 Iterator（迭代器），它们的原型中都有一个 Symbol.iterator 方法，而Object对象并没有实现这个接口，使得它无法被 for…of 遍历。
+```
+Array.prototype[Symbol.iterator];
+// ƒ values() { [native code] }
+ 
+String.prototype[Symbol.iterator];
+// ƒ [Symbol.iterator]() { [native code] }
+ 
+Set.prototype[Symbol.iterator];
+// ƒ values() { [native code] }
+ 
+Map.prototype[Symbol.iterator];
+// ƒ entries() { [native code] }
+ 
+Object.prototype[Symbol.iterator];
+// undefined
+```
+如何让对象可以被 for…of 遍历，当然是给它添加遍历器，代码如下：
+```
+Object.prototype[Symbol.iterator] = function () {
+    // 这里Object.keys不会获取到Symbol.iterator属性，原因见下文
+    const keys = Object.keys(this);
+    let index = 0;
+    return {
+        next: () => {
+            if (index < keys.length) {
+                // 迭代结果 未结束
+                return {
+                    value: this[keys[index++]],
+                    done: false
+                };
+            } else {
+                // 迭代结果 结束
+                return {
+                    value: undefined,
+                    done: true
+                };
+            }
+        }
+    };
+};
+```
+在此，有一点需要说明的是，不用担心 [Symbol.iterator] 属性会被 Object.keys() 获取到导致遍历结果出错，因为 Symbol.iterator 这样的 Symbol 属性，需要通过 Object.getOwnPropertySymbols(obj) 才能获取，Object.getOwnPropertySymbols() 方法返回一个给定对象自身的所有 Symbol 属性的数组。
+有一些场合会默认调用 Iterator 接口（即 Symbol.iterator 方法）：
+- 扩展运算符...：这提供了一种简便机制，可以将任何部署了 Iterator 接口的数据结构，转为数组。也就是说，只要某个数据结构部署了 Iterator 接口，就可以对它使用扩展运算符，将其转为数组（毫不意外的，代码 [...{}] 会报错，而 [...'123'] 会输出数组 ['1', '2', '3']）。
+- 数组和可迭代对象的解构赋值（解构是ES6提供的语法糖，其实内在是针对可迭代对象的Iterator接口，通过遍历器按顺序获取对应的值进行赋值。而普通对象解构赋值的内部机制，是先找到同名属性，然后再赋给对应的变量。）；
+- yield*：_yield* 后面跟的是一个可遍历的结构，它会调用该结构的遍历器接口；
+- 由于数组的遍历会调用遍历器接口，所以任何接受数组作为参数的场合，其实都调用；
+- 字符串是一个类似数组的对象，也原生具有Iterator接口，所以也可被 for…of 迭代。
+
+如何使用生成器实现遍历，代码如下：
+```
+Object.prototype[Symbol.iterator] = function* () {
+    const keys = Object.keys(this);
+    for (let i = 0; i < keys.length; i++) {
+        yield keys[i];
+    }
+};
+
+// 使用
+const obj = {
+    a: 1,
+    b: 2,
+    c: 3
+}
+for (const key of obj) {
+    console.log(key, obj[key]);
+} // a 1 // b 2 // c 3
+```
+
+### 23. for…of 遍历数组时并没有提供索引，无法直接修改数组
+可以通过实现 Number 原型对象上的迭代接口解决。
+代码如下：
+```
+Number.prototype[Symbol.iterator] = function* () {
+    const num = this.valueOf();
+    for (let i = 0; i < num; i++) {
+        yield i;
+    }
+}
+
+// 使用
+const arr = [0, 1, 2, 3, 4];
+for (const index of arr.length) {
+    arr[index] *= 2;
+}
+console.log(arr); // [0, 2, 4, 6, 8]
+```
+补充：如果是在 ts 中扩展 for…of 后，使用时会提示错误，加入下列接口声明就好了：
+```
+declare interface Object {
+    [Symbol.iterator]: any
+}
+declare interface Number {
+    [Symbol.iterator]: any
+}
+```
