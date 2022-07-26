@@ -359,7 +359,34 @@ new 操作符的实现步骤如下：
 4. 返回新的对象
 所以，上面的第二、三步，箭头函数都是没有办法执行的。
 
-### 21. for、for…in、for…of、forEach、map 等的区别
+### 21. JQuery链式调用原理
+eg:　　$("div").width("100px").height("100px");
+实现原理：
+```
+let Fun = {
+    fn1: function () {
+        console.log("fn1");
+        return this;
+    },
+    fn2: function () {
+        console.log("fn2");
+        return this;
+    },
+    fn3: function () {
+        console.log("fn3");
+        return this;
+    }
+}
+
+Fun.fn1().fn2();
+```
+这样子便可以实现链式了，原因是在每一个方法后面都加了一个 return this。
+
+在一个对象里面，this 指向的是对象本身，当我们调用方法的时候，这些方法都是在对象内部调用的，所以加 this 才可以访问到这些方法。
+
+如果没有加上 return this 的话，那么执行完一个函数之后，会默认返回 undefined，undefine 是 js 内部隐式添加的。
+
+### 22. for、for…in、for…of、forEach、map 等的区别
 1. **for循环：**
 根据下标遍历
 常规语句遍历，可循环数字、字符串、数组。
@@ -445,7 +472,7 @@ for…in 会遍历对象的整个原型链，性能非常差不推荐使用，�
 对于数组的遍历，for…in 会返回数组中所有可枚举的属性(包括原型链上可枚举的属性)，for…of 只返回数组的下标对应的属性值；
 总结：for…in 循环主要是为了遍历对象而生，不适用于遍历数组；for…of 循环可以用来遍历数组、类数组对象，字符串、Set、Map 以及 Generator 对象。
 
-### 22. 可以迭代大部分数据类型的 for…of 为什么不能遍历普通对象？怎么解决 for…of 遍历对象问题？
+### 23. 可以迭代大部分数据类型的 for…of 为什么不能遍历普通对象？怎么解决 for…of 遍历对象问题？
 我们知道，ES6 中引入 for…of 循环，很多时候用以替代 for…in 和 forEach() ，并支持新的迭代协议。for…of 允许你遍历 Array（数组）, String（字符串）, Map（映射）, Set（集合）,TypedArray(类型化数组)、arguments、NodeList对象、Generator等可迭代的数据结构等。for…of 语句在可迭代对象上创建一个迭代循环，调用自定义迭代钩子，并为每个不同属性的值执行语句。
 ```
 // 普通对象
@@ -528,7 +555,7 @@ for (const key of obj) {
 } // a 1 // b 2 // c 3
 ```
 
-### 23. for…of 遍历数组时并没有提供索引，无法直接修改数组
+### 24. for…of 遍历数组时并没有提供索引，无法直接修改数组
 可以通过实现 Number 原型对象上的迭代接口解决。
 代码如下：
 ```
@@ -555,3 +582,102 @@ declare interface Number {
     [Symbol.iterator]: any
 }
 ```
+
+### 25. 对 AJAX 的理解，实现一个 AJAX 请求
+AJAX 是 Asynchronous JavaScript and XML 的缩写，指的是通过 JavaScript 的异步通信，从服务器获取 XML 文档从中提取数据，再更新当前网页的对应部分，而不用刷新整个网页。
+创建 AJAX 请求的步骤：
+创建一个 XMLHttpRequest 对象。
+在这个对象上使用 open 方法创建一个 HTTP 请求，open 方法所需要的参数是请求的方法、请求的地址、是否异步和用户的认证信息。
+在发起请求前，可以为这个对象添加一些信息和监听函数。比如说可以通过 setRequestHeader 方法来为请求添加头信息。还可以为这个对象添加一个状态监听函数。一个 XMLHttpRequest 对象一共有 5 个状态，当它的状态变化时会触发 onreadystatechange 事件，可通过设置监听函数，来处理请求成功后的结果。当对象的 readyState 变为 4 的时候，代表服务器返回的数据接收完成，这个时候可以通过判断请求的状态，如果状态是 2xx 或者 304 的话则代表返回正常。
+这个时候就可以通过 response 中的数据来对页面进行更新了。
+当对象的属性和监听函数设置完成后，最后调用 sent 方法来向服务器发起请求，可以传入参数作为发送的数据体。
+```
+const SERVER_URL = "/server";
+let xhr = new XMLHttpRequest();
+// 创建 Http 请求
+xhr.open("GET", url, true);
+// 设置状态监听函数
+xhr.onreadystatechange = function () {
+    if (this.readyState !== 4) return;
+    // 当请求成功时
+    if (this.status === 200) {
+        handle(this.response);
+    } else {
+        console.error(this.statusText);
+    }
+};
+// 设置请求失败时的监听函数
+xhr.onerror = function () {
+    console.error(this.statusText);
+};
+// 设置请求头信息
+xhr.responseType = "json";
+xhr.setRequestHeader("Accept", "application/json");
+// 发送 Http 请求
+xhr.send(null);
+```
+使用 Promise 封装 AJAX：
+```
+// promise 封装实现：
+function getJSON(url) {
+    // 创建一个 promise 对象
+    let promise = new Promise(function (resolve, reject) {
+        let xhr = new XMLHttpRequest();
+        // 新建一个 http 请求
+        xhr.open("GET", url, true);
+        // 设置状态的监听函数
+        xhr.onreadystatechange = function () {
+            if (this.readyState !== 4) return;
+            // 当请求成功或失败时，改变 promise 的状态
+            if (this.status === 200) {
+                resolve(this.response);
+            } else {
+                reject(new Error(this.statusText));
+            }
+        };
+        // 设置错误监听函数
+        xhr.onerror = function () {
+            reject(new Error(this.statusText));
+        };
+        // 设置响应的数据类型
+        xhr.responseType = "json";
+        // 设置请求头信息
+        xhr.setRequestHeader("Accept", "application/json");
+        // 发送 http 请求
+        xhr.send(null);
+    });
+    return promise;
+}
+```
+
+### 26. ajax、axios、fetch 的区别
+1. AJAX
+Ajax 即“AsynchronousJavascriptAndXML”（异步 JavaScript 和 XML），是指一种创建交互式网页应用的网页开发技术。它是一种在无需重新加载整个网页的情况下，能够更新部分网页的技术。通过在后台与服务器进行少量数据交换，Ajax 可以使网页实现异步更新。
+这意味着可以在不重新加载整个网页的情况下，对网页的某部分进行更新。传统的网页（不使用 Ajax）如果需要更新内容，必须重载整个网页页面。其缺点如下：
+本身是针对 MVC 编程，不符合前端 MVVM 的浪潮。
+基于原生 XHR 开发，XHR 本身的架构不清晰。
+不符合关注分离（Separation of Concerns）的原则。
+配置和调用方式非常混乱，而且基于事件的异步模型不友好。
+2. Fetch
+fetch 号称是 AJAX 的替代品，是在 ES6 出现的，使用了 ES6 中的 promise 对象。Fetch 是基于 promise 设计的。Fetch 的代码结构比起 ajax 简单多。fetch 不是 ajax 的进一步封装，而是原生 js，没有使用 XMLHttpRequest 对象。
+fetch 的优点：
+语法简洁，更加语义化。
+基于标准 Promise 实现，支持 async/await。
+更加底层，提供的 API 丰富（request, response）。
+脱离了 XHR，是 ES 规范里新的实现方式。
+fetch 的缺点：
+fetch 只对网络请求报错，对 400，500 都当做成功的请求，服务器返回 400，500 错误码时并不会 reject，只有网络错误这些导致请
+求不能完成时，fetch 才会被 reject。
+fetch 默认不会带 cookie ， 需要添加配置项： fetch(url, {credentials: 'include'})。
+fetch 不支持 abort ，不支持超时控制 ， 使用 setTimeout 及 Promise.reject 的实现的超时控制并不能阻止请求过程继续在后台运行，造成了流量的浪费。
+fetch 没有办法原生监测请求的进度，而 XHR 可以。
+3. Axios
+Axios 是一种基于 Promise 封装的 HTTP 客户端，其特点如下：
+浏览器端发起 XMLHttpRequests 请求
+node 端发起 http 请求
+支持 Promise API
+监听请求和返回
+对请求和返回进行转化
+取消请求
+自动转换 json 数据
+客户端支持抵御 XSRF 攻击
