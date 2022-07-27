@@ -360,7 +360,7 @@ new 操作符的实现步骤如下：
 所以，上面的第二、三步，箭头函数都是没有办法执行的。
 
 ### 21. JQuery链式调用原理
-eg:　　$("div").width("100px").height("100px");
+eg:　$("div").width("100px").height("100px");
 实现原理：
 ```
 let Fun = {
@@ -673,11 +673,149 @@ fetch 不支持 abort ，不支持超时控制 ， 使用 setTimeout 及 Promise
 fetch 没有办法原生监测请求的进度，而 XHR 可以。
 3. Axios
 Axios 是一种基于 Promise 封装的 HTTP 客户端，其特点如下：
-浏览器端发起 XMLHttpRequests 请求
-node 端发起 http 请求
-支持 Promise API
-监听请求和返回
-对请求和返回进行转化
-取消请求
-自动转换 json 数据
-客户端支持抵御 XSRF 攻击
+浏览器端发起 XMLHttpRequests 请求。
+node 端发起 http 请求。
+支持 Promise API。
+监听请求和返回。
+对请求和返回进行转化。
+取消请求。
+自动转换 json 数据。
+客户端支持抵御 XSRF 攻击。
+
+### 27. 跨域的产生原因及解决方案
+1. 跨域的原因
+跨域是是因为浏览器的同源策略限制，是浏览器的一种安全机制，服务端之间是不存在跨域的。
+所谓同源指的是两个页面具有相同的协议、主机和端口，三者有任一不相同即会产生跨域。
+
+2. 跨域举例
+
+| 当前页面url | 被请求页面url | 是否跨域 | 原因 |
+|---|---|---|---|
+| http://www.test.com/ | http://www.test.com/index.html | 否 | 同源（协议、域名、端口号相同） |
+| http://www.test.com/ | https://www.test.com/index.html | 跨域 | 协议不同（http / https） |
+| http://www.test.com/ | http://www.baidu.com/ | 跨域 | 主域名不同（test / baidu） |
+| http://www.test.com/ | https://blog.test.com/ | 跨域 | 子域名不同（www / blog） |
+| http://www.test.com:8080/ | https://www.test.com:7001/ | 跨域 | 端口号不同（8080 / 7001） |
+
+3. 同源策略目的
+保证用户信息安全，防止恶意网站窃取数据。同源策略是必须的，否则 cookie 可以共享。
+
+4. 同源策略的限制范围
+- cookie、localstorage、indexdb 无法读取。
+- DOM 无法获取。
+- ajax 请求不能发送
+
+5. 规避策略
+    1. cookie：设置document.domain共享cookie。
+    2. DOM获取：（父子页面通信）H5引入了一个API，这个API为windows对象新增了一个window.postMessage方法，允许跨窗口通信，无论这两个窗口是否同源。
+    > eg: window.opener.postMessage(content,origin)
+    content是消息的具体内容，origin是协议 + 域名 + 端口
+    3. JSONP：JSONP 是服务器无客户端跨源通信的常用方法。基本思想是网页通过添加一个 \<script> 标签，向服务器请求 json 数据，这种做法不受同源政策的限制，服务器收到请求后，将数据放在一个指定名字的回调函数里面传回来。（只能发GET请求）
+    4. WebSocket：WebSocket 是一种通信协议。使用 ws://（非加密）和 wss://（加密）作为协议前缀。该协议不实行同源政策，只要服务器支持，就可以通过它进行跨源通信。
+    5. CORS
+    跨域资源共享（corss-origin resource sharing）：CORS 需要浏览器和服务器同时支持。目前所有浏览器都支持该功能，IE浏览器不能低于IE10。整个 CORS 通信过程，都是浏览器自动完成，不需要用户参与。对于开发者来说，CORS 通信与同源的 AJAX 通信没有差别，代码完全一样。浏览器一旦发现 AJAX 请求跨源，就会自动添加一些附加的头信息，有时还会多出一次附加的请求，但用户不会有感觉。因此，实现 CORS 通信的关键是服务器。只要服务器实现了 CORS 接口，就可以跨源通信。
+    两种请求：浏览器将 CORS 请求分成两类：简单请求（simple request）和非简单请求（not-so-simple request）。
+    ![CORS请求](../assets/images/CORS%E8%AF%B7%E6%B1%82.jpg)
+    - 简单请求
+        - 对于简单请求，浏览器直接发出 CORS 请求。具体来说，就是在 Header 中增加一个 Origin 字段。如果浏览器发现跨源 AJAX 请求是简单请求，就自动在头信息之中，添加一个 Origin 字段。
+        ```
+        GET /cors HTTP/1.1 Origin: http://easywork.xin //浏览器添加字段，说明本次请求来自哪个源（协议+域名+端口）。 Host: 119.23.214.114 Accept-Language: en-US Connection: keep-alive User-Agent: Mozilla/5.0...
+        ```
+        - 服务器根据 Origin 的值决定是否同意这次请求。
+        如果 Origin 指定的源在不在后端的许可白名单范围内，服务器会返回一个正常的 http 回应。浏览器接收后发现，这个 response 的 Header 没有包含 Access-Control-Allow-Origin 字段，就知道出错了，从而抛出一个错误，被 XMLHttpRequest 的 onerror 回调函数捕获。这种错误无法通过状态码识别，因此HTTP response的状态码有可能是200。
+        如果Origin指定的域名在许可的范围内，则服务器返回的相应中，会多出几个头信息字段：
+        ```
+        Access-Control-Allow-Origin: http://easywork.xin Access-Control-Allow-Credentials: true Access-Control-Expose-Headers: FooBar Content-Type: text/html; charset=utf-8
+        ```
+        Access-Control-Allow-Origin：（必须字段）它的值要么是请求时 Origin 的值，要么是*，表示接受任意域名的请求。
+        Access-Control-Allow-Credentials：（可选字段）它是一个 bool 值，表示是否允许发送 Cookie。默认情况下，Cookie 不包括在 CORS 请求之中。设为 true，表示服务器明确许可，Cookie 可以包含在请求中，一起发给服务器。CORS 请求默认不发送 Cookie 和 HTTP 认证信息。如果要把 Cookie 发送到服务器，一方面要服务器同意，指定 Access-Control-Allow-Credentials: true；另一方面，前端必须在 AJAX 请求中打开 withCredentials 属性：
+        ```
+        var xhr = new XMLHttpRequest(); 
+        xhr.withCredentials = true;
+        ```
+        注意：如果要发送 Cookie，Access-Control-Allow-Origin 不能设置为* ，必须指定明确的，与请求网页一致的域名。同时，Cookie 依然遵守同源政策，只有用服务器域名设置的Cookie 才会上传，其他域名的 Cookie 并不会上传。
+        Access-Control-Expose-Headers：（可选字段）CORS 请求时，XMLHttpRequest 对象的 getResponseHeader(args) 方法只能拿到6个基本字段：Cache-Control、Content-Language、Content-Type、Expires、Last-Modified、Pragma。如果想拿到其他字段，就必须在 Access-Control-Expose-Headers 里面指定。
+
+    - 非简单请求
+    非简单请求是那种对服务器有特殊要求的请求，比如请求方法是 PUT 或 DELETE，或者 Content-Type 字段的类型是 application/json。
+    非简单请求的 CORS 请求，会在正式通信之前，增加一次 HTTP 查询请求，称为“预检”请求（preflight）。浏览器先询问服务器，当前网页所在的域名是否在服务器的许可名单之中，以及可以使用哪些 HTTP 动词和头信息字段。只有得到肯定答复，浏览器才会发出正式的 XMLHttpRequest 请求，否则就报错。
+    一旦服务器通过了“预检”请求，以后每次浏览器正常请求 CORS 请求，就跟简单请求一样。会有 Origin 字段，响应头里也会有对应的 Access-Control-Allow-Origin 字段。
+
+    **与JSONP比较**
+    CORS 与 JSONP 的使用目的相同，但是比 JSONP 更强大。JSONP 只支持 GET 请求，CORS 支持所有类型的 HTTP 请求。JSONP 的优势在于支持老式的浏览器，以及可以向比支持 CORS 的网站请求数据。
+
+### 28. jsonp的原理
+jsonp 之所以能跨域，是因为他并不是发送 ajax 请求，并不是利用 XMLHTTPRequest 对象和服务端进行通信，它其实是利用动态创建的 script 标签，而 script 标签是没有同源策略限制的，可以跨域的。
+创建 script 标签，然后将其 src 指向我们真实的服务端的地址，在这个地址的后面有一个参数比如 calback=a，然后服务端可以解析到这个url 中的 callback=a。服务端在返回的数据时，就会调用 a 方法，去包裹一段数据，然后返回这段 js 代码，相当于在前端去执行这个 a 方法。那么在前端发送请求之前，就要在 window 上去注册这个 a 方法，那么在服务端返回这个 a 方法执行的时候，就可以去之前在 window 上定义的 a 方法中获得数据了。
+1. 利用的就是 script 的 src 标签属性没有跨域限制来实现的。
+    - script的特性：会将引用的外部文件的文本内容当做 js 代码来进行解析
+    - 将远程服务器的资源添加到当前路径（位置）进行解析
+    - json 的格式：属性名必须有冒号，例如{“b”：145}
+    - jsonp == json + padding
+
+2. 执行的过程
+    - 前端定义一个解析函数，例如 jsonpCallback = function（res）{}
+    - 通过 params 的形式包装 script 的请求参数，并且声明执行函数（如 cb = jsonpCallback）
+    - 后端获取到前端声明的执行函数（jsonpCallback），并以携带参数并且调用执行函数的方式传递给前端
+    - 前端在 script 标签返回资源的时候就会执行 jsonpCallback，并以回调函数的方式拿到返回的数据了
+
+3. 优缺点
+缺点：只能进行get请求
+优点：兼容性好，在一些老的浏览器中也可以运行
+
+4. 完整的jsonp代码：
+```
+// 定义
+function JSONP({
+    url,
+    params = {},
+    callbackKey = 'cb',
+    callback
+}) {
+    // 定义本地的唯一callbackId，若是没有的话则初始化为1
+    JSONP.callbackId = JSONP.callbackId || 1;
+    let callbackId = JSONP.callbackId;
+    // 把要执行的回调加入到JSON对象中，避免污染window
+    JSONP.callbacks = JSONP.callbacks || [];
+    JSONP.callbacks[callbackId] = callback;
+    // 把这个名称加入到参数中: 'cb=JSONP.callbacks[1]'
+    params[callbackKey] = `JSONP.callbacks[${callbackId}]`;
+    // 得到'id=1&cb=JSONP.callbacks[1]'
+    const paramString = Object.keys(params).map(key => {
+        return `${key}=${encodeURIComponent(params[key])}`
+    }).join('&')
+    // 创建 script 标签
+    const script = document.createElement('script');
+    script.setAttribute('src', `${url}?${paramString}`);
+    document.body.appendChild(script);
+    // id自增，保证唯一
+    JSONP.callbackId++;
+}
+
+// 使用
+JSONP({
+    url: 'http://localhost:8080/api/jsonps',
+    params: {
+        a: '2&b=3',
+        b: '4'
+    },
+    callbackKey: 'cb',
+    callback(res) {
+        console.log(res)
+    }
+})
+JSONP({
+    url: 'http://localhost:8080/api/jsonp',
+    params: {
+        id: 1
+    },
+    callbackKey: 'cb',
+    callback(res) {
+        console.log(res)
+    }
+})
+```
+**注意**
+encodeURI 和 encodeURIComponent 的区别：
+- encodeURI() 不会对本身属于 URI 的字符进行编码，例如：“/”,“：”，“#”，“？”
+- encodeURIComponent() 则会对他发现的任何的非标准字符进行编码，同时使用 decodeURIcomponent() 来解码。
