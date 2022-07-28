@@ -744,7 +744,7 @@ node 端发起 http 请求。
     **与JSONP比较**
     CORS 与 JSONP 的使用目的相同，但是比 JSONP 更强大。JSONP 只支持 GET 请求，CORS 支持所有类型的 HTTP 请求。JSONP 的优势在于支持老式的浏览器，以及可以向比支持 CORS 的网站请求数据。
 
-### 28. jsonp的原理
+### 28. jsonp的跨域原理
 jsonp 之所以能跨域，是因为他并不是发送 ajax 请求，并不是利用 XMLHTTPRequest 对象和服务端进行通信，它其实是利用动态创建的 script 标签，而 script 标签是没有同源策略限制的，可以跨域的。
 创建 script 标签，然后将其 src 指向我们真实的服务端的地址，在这个地址的后面有一个参数比如 calback=a，然后服务端可以解析到这个url 中的 callback=a。服务端在返回的数据时，就会调用 a 方法，去包裹一段数据，然后返回这段 js 代码，相当于在前端去执行这个 a 方法。那么在前端发送请求之前，就要在 window 上去注册这个 a 方法，那么在服务端返回这个 a 方法执行的时候，就可以去之前在 window 上定义的 a 方法中获得数据了。
 1. 利用的就是 script 的 src 标签属性没有跨域限制来实现的。
@@ -819,3 +819,65 @@ JSONP({
 encodeURI 和 encodeURIComponent 的区别：
 - encodeURI() 不会对本身属于 URI 的字符进行编码，例如：“/”,“：”，“#”，“？”
 - encodeURIComponent() 则会对他发现的任何的非标准字符进行编码，同时使用 decodeURIcomponent() 来解码。
+
+### 29. 对 Promise 的理解
+Promise 是异步编程的一种解决方案，它是一个对象，可以获取异步操作的消息，他的出现大大改善了异步编程的困境，避免了地狱回调，它比传统的解决方案回调函数和事件更合理和更强大。
+所谓 Promise，简单说就是一个容器，里面保存着某个未来才会结束的事件（通常是一个异步操作）的结果。从语法上说，Promise 是一个对象，从它可以获取异步操作的消息。Promise 提供统一的 API，各种异步操作都可以用同样的方法进行处理。
+1. Promise 的实例有三个状态:
+Pending（进行中）
+Resolved（已完成）
+Rejected（已拒绝）
+当把一件事情交给 promise 时，它的状态就是 Pending，任务完成了状态就变成了 Resolved、没有完成失败了就变成了 Rejected。
+2. Promise 的实例有两个过程：
+pending -> fulfilled : Resolved（已完成）
+pending -> rejected：Rejected（已拒绝）
+注意：一旦从进行状态变成为其他状态就永远不能更改状态了。
+**Promise 的特点：**
+对象的状态不受外界影响。promise 对象代表一个异步操作，有三种状态，pending（进行中）、fulfilled（已成功）、rejected（已失
+败）。只有异步操作的结果，可以决定当前是哪一种状态，任何其他操作都无法改变这个状态，这也是 promise 这个名字的由来——“承诺”；
+一旦状态改变就不会再变，任何时候都可以得到这个结果。promise 对象的状态改变，只有两种可能：从 pending 变为 fulfilled，从 pending 变为 rejected。这时就称为 resolved（已定型）。如果改变已经发生了，你再对 promise 对象添加回调函数，也会立即得到这个结果。这与事件（event）完全不同，事件的特点是：如果你错过了它，再去监听是得不到结果的。
+**Promise 的缺点：**
+无法取消 Promise，一旦新建它就会立即执行，无法中途取消。
+如果不设置回调函数，Promise 内部抛出的错误，不会反应到外部。
+当处于 pending 状态时，无法得知目前进展到哪一个阶段（刚刚开始还是即将完成）
+**总结：**
+Promise 对象是异步编程的一种解决方案，最早由社区提出。Promise 是一个构造函数，接收一个函数作为参数，返回一个 Promise 实例。
+一个 Promise 实例有三种状态，分别是 pending、resolved 和 rejected，分别代表了进行中、已成功和已失败。实例的状态只能由 pending 转变 resolved 或者 rejected 状态，并且状态一经改变，就凝固了，无法再被改变了。
+状态的改变是通过 resolve() 和 reject() 函数来实现的，可以在异步操作结束后调用这两个函数改变 Promise 实例的状态，它的原型上定义了一个 then 方法，使用这个 then 方法可以为两个状态的改变注册回调函数。这个回调函数属于微任务，会在本轮事件循环的末尾执行。
+注意：在构造 Promise 的时候，构造函数内部的代码是立即执行的。
+
+### 30. Promise 解决了什么问题？
+在工作中经常会碰到这样一个需求，比如我使用 ajax 发一个 A 请求后，成功后拿到数据，需要把数据传给 B 请求；那么需要如下编写代码：
+```
+let fs = require('fs')
+fs.readFile('./a.txt', 'utf8', function (err, data) {
+    fs.readFile(data, 'utf8', function (err, data) {
+        fs.readFile(data, 'utf8', function (err, data) {
+            console.log(data);
+        })
+    })
+})
+```
+上面的代码有如下缺点：
+后一个请求需要依赖于前一个请求成功后，将数据往下传递，会导致多个 ajax 请求嵌套的情况，代码不够直观。
+如果前后两个请求不需要传递参数的情况下，那么后一个请求也需要前一个请求成功后再执行下一步操作，这种情况下，那么也需要如上编写代码，导致代码不够直观。
+Promise 出现之后，代码变成这样：
+```
+function read(url) {
+    return new Promise((resolve, reject) => {
+        fs.readFile(url, 'utf8', function (error, data) {
+            error && reject(error);
+            resolve(data);
+        })
+    })
+}
+
+read('./a.txt').then(data => {
+    return read(data);
+}).then(data => {
+    return read(data);
+}).then(data => {
+    console.log(data);
+});
+```
+这样代码看起了就简洁了很多，解决了地狱回调的问题。
