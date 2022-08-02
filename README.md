@@ -13,7 +13,7 @@ Front-End-Web-Development-Interview
 |---|---|---|---|
 | [JavaScript.md](/questions/JavaScript.md) | Front End Web Development Interview JavaScript 部分 | JavaScript | 待完善 |
 | [Vue.md](/questions/Vue.md) | Front End Web Development Interview Vue 部分 | Vue | 待完善 |
-| [React.md](/questions/React.md) | Front End Web Development Interview React 部分 | React | 待添加 |
+| [React.md](/questions/React.md) | Front End Web Development Interview React 部分 | React | 待完善 |
 | [性能优化.md](/questions/性能优化.md) | Front End Web Development Interview 性能优化 部分 | 性能优化 | 待添加 |
 | [前端工程化.md](/questions/前端工程化.md) | Front End Web Development Interview 前端工程化 部分 | 前端工程化 | 待添加 |
 | [浏览器.md](/questions/浏览器.md) | Front End Web Development Interview 浏览器 部分 | 浏览器 | 待添加 |
