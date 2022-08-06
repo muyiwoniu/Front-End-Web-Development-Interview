@@ -17,7 +17,7 @@ react 事件不能采用 return false 的方式来阻止浏览器的默认行为
 React 基于 Virtual DOM 实现了一个 SyntheticEvent 层（合成事件层），定义的事件处理器会接收到一个合成事件对象的实例，它符合 W3C 标准，且与原生的浏览器事件拥有同样的接口，支持冒泡机制，所有的事件都自动绑定在最外层上。
 在 React 底层，主要对合成事件做了两件事：
 事件委派：React 会把所有的事件绑定到结构的最外层，使用统一的事件监听器，这个事件监听器上维持了一个映射来保存所有组件内部事件监听和处理函数。
-自动绑定：React 组件中，每个方法的上下文都会指向该组件的实例，即自动绑定 this
+自动绑定：React 组件中，每个方法的上下文都会指向该组件的实例，即自动绑定 this 为当前组件。
 
 ### 3. React 高阶组件、Render props、hooks 有什么区别，为什么要不断迭代？
 这三者是目前 react 解决代码复用的主要方式：
@@ -26,8 +26,7 @@ render props 是指一种在 React 组件之间使用一个值为函数的 prop 
 通常，render props 和高阶组件只渲染一个子节点。让 Hook 来服务这个使用场景更加简单。这两种模式仍有用武之地，（例如，一个虚拟滚动条组件或许会有一个 renderltem 属性，或是一个可见的容器组件或许会有它自己的 DOM 结构）。但在大部分场景下，Hook 足够了，并且能够帮助减少嵌套。
 **1. HOC**
 官方解释∶
-高阶组件（HOC）是 React 中用于复用组件逻辑的一种高级技巧。HOC 自身不是 React API 的一部分，它是一种基于 React 的组合特性而
-形成的设计模式。
+高阶组件（HOC）是 React 中用于复用组件逻辑的一种高级技巧。HOC 自身不是 React API 的一部分，它是一种基于 React 的组合特性而形成的设计模式。
 简言之，HOC 是一种组件的设计模式，HOC 接受一个组件和额外的参数（如果需要），返回一个新的组件。HOC 是纯函数，没有副作用。
 ```
 // HOC 的定义
@@ -79,7 +78,7 @@ class DataProvider extends React.Components {
     <h1>Helo { data.name }</h1>
 )} />
 ```
-由此可以看到，render props 的优缺点也很明显∶
+由此可以看到，render props 的优缺点也很明显：
 优点：数据共享、代码复用，将组件内的 state 作为 props 传递给调用者，将渲染逻辑交给调用者。
 缺点：无法在 return 语句外访问数据、嵌套写法不够优雅。
 **3. Hooks**
@@ -102,11 +101,10 @@ function CommentList(props) {
 // 使用
 <CommentList data = 'hello' />
 ```
-以上可以看出，hook 解决了 hoc 的 prop 覆盖的问题，同时使用的方
-式解决了 render props 的嵌套地狱的问题。hook 的优点如下∶
+以上可以看出，hook 解决了 hoc 的 prop 覆盖的问题，同时使用的方式解决了 render props 的嵌套地狱的问题。hook 的优点如下∶
 使用直观；
 解决 hoc 的 prop 重名问题；
-解决 render props 因共享数据 而出现嵌套地狱的问题；
+解决 render props 因共享数据而出现嵌套地狱的问题；
 能在 return 之外使用数据的问题。
 需要注意的是：hook 只能在组件顶层使用，不可在分支语句中使用。
 **总结∶**
@@ -117,3 +115,21 @@ Hoc、render props 和 hook 都是为了解决代码复用的问题，但是 hoc
 组件：一个组件 component 可以通过多种方式声明。可以是带有一个 render() 方法的类，简单点也可以定义为一个函数。这两种情况下，它都把属性 props 作为输入，把返回的一棵元素树作为输出。
 实例：一个实例 instance 是你在所写的组件类 component class 中使用关键字 this 所指向的东西(译注:组件实例)。它用来存储本地状态和响应生命周期事件很有用。
 函数式组件(Functional component)根本没有实例 instance。类组件(Class component)有实例 instance，但是永远也不需要直接创建一个组件的实例，因为 React 帮我们做了这些。
+
+### 5. React.createClass 和 extends Component 的区别有哪些？
+React.createClass 和 extends Component 的区别主要在于：
+1. 语法区别
+createClass 本质上是一个工厂函数，extends 的方式更加接近最新的 ES6 规范的 class 写法。两种方式在语法上的差别主要体现在方法的定义和静态属性的声明上。
+createClass 方式的方法定义使用逗号, 隔开，因为 creatClass 本质上是一个函数，传递给它的是一个 Object；而 class 的方式定义方法时务必谨记不要使用逗号隔开，这是 ES6 class 的语法规范。
+2. propType 和 getDefaultProps
+React.createClass：通过 proTypes 对象和 getDefaultProps() 方法来设置和获取 props。
+React.Component：通过设置两个属性 propTypes 和 defaultProps
+3. 状态的区别
+React.createClass：通过 getInitialState()方法返回一个包含初始值的对象
+React.Component：通过 constructor 设置初始状态
+4. this 区别
+React.createClass：会正确绑定 this
+React.Component：由于使用了 ES6，这里会有些微不同，属性并不会自动绑定到 React 类的实例上。
+5. Mixins
+React.createClass：使用 React.createClass 的话，可以在创建组件时添加一个叫做 mixins 的属性，并将可供混合的类的集合以数组的形式赋给 mixins。
+如果使用 ES6 的方式来创建组件，那么 React mixins 的特性将不能被使用了。
