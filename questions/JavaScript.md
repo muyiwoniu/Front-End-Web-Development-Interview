@@ -882,7 +882,6 @@ read('./a.txt').then(data => {
 ```
 这样代码看起了就简洁了很多，解决了地狱回调的问题。
 
-
 ### 31. 对 async/await 的理解
 async/await 其实是 Generator 的语法糖，它能实现的效果都能用 then 链来实现，它是为优化 then 链而开发出来的。从字面上来看，async 是“异步”的简写，await 则为等待，所以很好理解 async 用于申明一个 function 是异步的，而 await 用于等待一个异步方法执行完成。当然语法上强制规定 await 只能出现在 asnyc 函数中，先来看看 async 函数返回了什么：
 ```
@@ -986,3 +985,41 @@ doIt();
 Promise 传递中间值⾮常麻烦，⽽async/await⼏乎是同步的写法，⾮常优雅
 错误处理友好，async/await 可以⽤成熟的 try/catch，而 Promise 的错误捕获⾮常冗余
 调试友好，Promise 的调试很差，由于没有代码块，你不能在⼀个返回表达式的箭头函数中设置断点，如果你在⼀个.then 代码块中使⽤调试器的步进(step-over)功能，调试器并不会进⼊后续的.then 代码块，因为调试器只能跟踪同步代码的每⼀步。
+
+### 34. Proxy 可以实现什么功能？
+在 Vue3.0 中通过 Proxy 来替换原本的 Object.defineProperty 来实现数据响应式。
+Proxy 是 ES6 中新增的功能，它可以用来自定义对象中的操作。
+```
+let p = new Proxy(target, handler)
+```
+代表需要添加代理的对象，handler 用来自定义对象中的操作，比如可以用来自定义 set 或者 get 函数。
+下面来通过 Proxy 来实现一个数据响应式：
+```
+let onWatch = (obj, setBind, getLogger) => {
+    let handler = {
+        get(target, property, receiver) {
+            getLogger(target, property);
+            return Reflect.get(target, property, receiver);
+        },
+        set(target, property, value, receiver) {
+            setBind(value, property);
+            return Reflect.set(target, property, value);
+        }
+    }
+    return new Proxy(obj, handler);
+}
+let obj = { a: 1 };
+let p = onWatch(
+    obj, 
+    (v, property) => {
+        console.log(`监听到属性${property}改变为${v}`);
+    },
+    (target, property) => {
+        console.log(`'${property}' = ${target[property]}`);
+    }
+)
+p.a = 2;
+p.a // 'a' = 2
+```
+在上述代码中，通过自定义 set 和 get 函数的方式，在原本的逻辑中插入了我们的函数逻辑，实现了在对对象任何属性进行读写时发出通知。
+当然这是简单版的响应式实现，如果需要实现一个 Vue 中的响应式，需要在 get 中收集依赖，在 set 派发更新，之所以 Vue3.0 要使用 Proxy 替换原本的 API 原因在于 Proxy 无需一层层递归为每个属性添加代理，一次即可完成以上操作，性能上更好，并且原本的实现有一些数据更新不能监听到，但是 Proxy 可以完美监听到任何方式的数据改变，唯一缺陷就是浏览器的兼容性不好。
