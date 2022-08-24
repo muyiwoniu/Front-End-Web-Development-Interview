@@ -1080,3 +1080,10 @@ async 属性：给 js 脚本添加 async 属性，这个属性会使脚本异步
 动态创建 DOM 方式：动态创建 DOM 标签的方式，可以对文档的加载事件进行监听，当文档加载完成后再动态的创建 script 标签来引入 js 脚本。
 使用 setTimeout 延迟方法：设置一个定时器来延迟加载 js 脚本文件。
 让 JS 最后加载：将 js 脚本放在文档的底部，来使 js 脚本尽可能的在最后来加载执行。
+
+### 43. ES6 模块与 CommonJS 模块有什么异同？
+ES6 Module 和 CommonJS 模块的区别：
+CommonJS 是对模块的浅拷⻉，ES6 Module 是对模块的引⽤，即 ES6 Module 只存只读，不能改变其值，也就是指针指向不能变，类似 const；
+import 的接⼝是 read-only（只读状态），不能修改其变量值。 即不能修改其变量的指针指向，但可以改变变量内部指针指向，可以对 commonJS 对重新赋值（改变指针指向），但是对 ES6 Module 赋值会编译报错。
+ES6 Module 和 CommonJS 模块的共同点：
+CommonJS 和 ES6 Module 都可以对引⼊的对象进⾏赋值，即对对象内部属性的值进⾏改变。
