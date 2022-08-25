@@ -28,7 +28,7 @@ render props 是指一种在 React 组件之间使用一个值为函数的 prop 
 官方解释∶
 高阶组件（HOC）是 React 中用于复用组件逻辑的一种高级技巧。HOC 自身不是 React API 的一部分，它是一种基于 React 的组合特性而形成的设计模式。
 简言之，HOC 是一种组件的设计模式，HOC 接受一个组件和额外的参数（如果需要），返回一个新的组件。HOC 是纯函数，没有副作用。
-```
+```js
 // HOC 的定义
 function withSubscription(WrappedComponent, selectData) {
     return class extends react.Component {
@@ -57,7 +57,7 @@ HOC 的优缺点∶
 官方解释∶
 "render prop"是指一种在 React 组件之间使用一个值为函数的 prop 共享代码的简单技术。
 具有 render prop 的组件接受一个返回 React 元素的函数，将 render 的渲染逻辑注入到组件内部。在这里，"render"的命名可以是任何其他有效的标识符。
-```
+```js
 // DataProvider 组件内部的渲染逻辑如下
 class DataProvider extends React.Components {
     state = {
@@ -84,7 +84,7 @@ class DataProvider extends React.Components {
 **3. Hooks**
 官方解释∶
 Hook 是 React 16.8 的新增特性。它可以让你在不编写 class 的情况下使用 state 以及其他的 React 特性。通过自定义 hook，可以复用代码逻辑。
-```
+```js
 // 自定义一个获取订阅数据的 HOOK
 function useSubscription() {
     const data = DataSource.getComments();
