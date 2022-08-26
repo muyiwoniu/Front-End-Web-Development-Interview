@@ -76,3 +76,64 @@ MPA 多页面应用 （MultiPage Application），指有多个独立页面的应
 | 数据传递 | 因为单页面，使用全局变量就好（Vue） | cookie、localStorage 等缓存方案，URL 参数，调用接口保存等 |
 | 相关成本 | 前期开发成本较高，后期维护较为容易 | 前期开发成本低，后期维护比较麻烦，因为可能一个功能需要改很多地方 |
 
+### 7. Vue 中封装的数组方法有哪些，其如何实现页面更新?
+在 Vue 中，对响应式处理利用的是 Object.defineProperty 对数据进行拦截，而这个方法并不能监听到数组内部变化，数组长度变化，数组的截取变化等，所以需要对这些操作进行 hack，让 Vue 能监听到其中的变化。
+Vue 将被侦听的数组的变更方法进行了包裹，所以它们也将会触发视图更新。这些被包裹过的方法包括：
+- push()
+- pop()
+- shift()
+- unshift()
+- splice()
+- sort()
+- reverse()
+那 Vue 是如何实现让这些数组方法实现元素的实时更新的呢，下面是 Vue 中对这些方法的封装：
+```js
+// 缓存数组原型
+const arrayProto = Array.prototype;
+// 实现 arrayMethods.__proto__ === Array.prototype
+export const arrayMethods = Object.create(arrayProto);
+// 需要进行功能拓展的方法
+const methodsToPatch = [
+    "push",
+    "pop",
+    "shift",
+    "unshift",
+    "splice",
+    "sort",
+    "reverse"
+];
+/**
+ * Intercept mutating methods and emit events
+ */
+methodsToPatch.forEach(function (method) {
+    // 缓存原生数组方法
+    const original = arrayProto[method];
+    def(arrayMethods, method, function mutator(...args) {
+        // 执行并缓存原生数组功能
+        const result = original.apply(this, args);
+        // 响应式处理
+        const ob = this.__ob__;
+        let inserted;
+        switch (method) {
+            // push、unshift 会新增索引，所以要手动 observer
+            case "push":
+            case "unshift":
+                inserted = args;
+                break;
+                // splice 方法，如果传入了第三个参数，也会有索引加入，也要手动 observer
+            case "splice":
+                inserted = args.slice(2);
+                break;
+        }
+        // 获取插入的值，并设置响应式监听
+        if (inserted) ob.observeArray(inserted);
+        // notify change
+        ob.dep.notify(); // 通知依赖更新
+        // 返回原生数组方法的执行结果
+        return result;
+    });
+});
+
+```
+简单来说就是，重写了数组中的那些原生方法，首先获取到这个数组的__ob__，也就是它的 Observer 对象，如果有新的值，就调用 observeArray 继续对新的值观察变化（也就是通过 target__proto__ == arrayMethods 来改变了数组实例的型），然后手动调用 notify，通知渲染 watcher，执行 update。
+
