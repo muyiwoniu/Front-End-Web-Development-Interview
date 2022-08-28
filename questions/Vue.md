@@ -141,3 +141,35 @@ methodsToPatch.forEach(function (method) {
 不会立即同步执行重新渲染。Vue 实现响应式并不是数据发生变化之后 DOM 立即变化，而是按一定的策略进行 DOM 的更新。Vue 在更新 DOM 时是异步执行的。只要侦听到数据变化，Vue 将开启一个队列，并缓冲在同一事件循环中发生的所有数据变更。 
 如果同一个 watcher 被多次触发，只会被推入到队列中一次。这种在缓冲时去除重复数据对于避免不必要的计算和 DOM 操作是非常重要的。然后，在下一个的事件循环 tick 中，Vue 刷新队列并执行实际（已去重的）工作。
 
+### 9. 简述 mixin、extends 的覆盖逻辑
+1. mixin 和 extends
+mixin 和 extends 均是用于合并、拓展组件的，两者均通过 mergeOptions 方法实现合并。
+mixins 接收一个混入对象的数组，其中混入对象可以像正常的实例对象一样包含实例选项，这些选项会被合并到最终的选项中。Mixin 钩子按照传入顺序依次调用，并在调用组件自身的钩子之前被调用。extends 主要是为了便于扩展单文件组件，接收一个对象或构造函数。
+| 属性名称 | 合并策略 | 对应合并函数 |
+|---|---|---|
+| data | mixins / extends 只会将自己有的但是组件上没有的内容混合到组件上，重复定义默认使用组件上的。如果 data 里的值是对象，将递归内部对象继续按照该策略合并 | mergeDataOrFn, mergeData |
+| provide | 同上 | mergeDataOrFn, mergeData |
+| props | mixins / extends 只会将自己有的但组件上没有的内容混合到组件上 | extend |
+| methods | 同上 | extend |
+| inject | 同上 | extend |
+| computed | 同上 | extend |
+| 组件、过滤器、指令属性 | 同上 | extend |
+| el | 同上 | defaultStrat |
+| propsData | 同上 | defaultStrat |
+| watch | 合并 watch 监控的回调方法。执行顺序是先 mixins / extends 里 watch 定义的回调，然后是组建的回调 | strats.watch |
+| HOOKS 生命周期钩子 | 同一种钩子的回调函数会被合并成数组。执行顺序是先 mixins / extends 里定义的钩子函数，然后才是组件里定义的 | mergeHook |
+2. mergeOptions 的执行过程
+规范化选项（normalizeProps、normalizelnject、normalizeDirectives）
+对未合并的选项，进行判断
+```js
+if (!child._base) {
+    if (child.extends) {
+        parent = mergeOptions(parent, child.extends, vm);
+    }
+    if (child.mixins) {
+        for (let i = 0, l = child.mixins.length; i < l; i++) {
+            parent = mergeOptions(parent, child.mixins[i], vm);
+        }
+    }
+}
+```
