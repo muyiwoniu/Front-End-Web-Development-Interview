@@ -229,4 +229,6 @@ Vue 提倡单向数据流，即父级 props 的更新会流向子组件，但是
 3. 子组件 destroyed 
 4. 父组件 destroyed
 
-
+### 15. created 和 mounted 的区别
+created:在模板渲染成 html 前调用，即通常初始化某些属性值，然后再渲染成视图。
+mounted:在模板渲染成 html 后调用，通常是初始化页面完成后，再对 html 的 dom 节点进行一些需要的操作。
