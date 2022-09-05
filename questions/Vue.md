@@ -238,3 +238,9 @@ Vue 提倡单向数据流，即父级 props 的更新会流向子组件，但是
 ### 16. created 和 mounted 的区别
 created:在模板渲染成 html 前调用，即通常初始化某些属性值，然后再渲染成视图。
 mounted:在模板渲染成 html 后调用，通常是初始化页面完成后，再对 html 的 dom 节点进行一些需要的操作。
+
+### 17. 一般在哪个生命周期请求异步数据
+我们可以在钩子函数 created、beforeMount、mounted 中进行调用，因为在这三个钩子函数中，data 已经创建，可以将服务端端返回的数据进行赋值。
+推荐在 created 钩子函数中调用异步请求，因为在 created 钩子函数中调用异步请求有以下优点：
+- 能更快获取到服务端数据，减少页面加载时间，用户体验更好；
+- SSR 不支持 beforeMount、mounted 钩子函数，放在 created 中有助于一致性。
