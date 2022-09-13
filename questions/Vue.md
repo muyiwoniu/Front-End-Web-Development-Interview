@@ -314,7 +314,12 @@ pushState() 可额外设置 title 属性供后续使用。
 hash 模式下，仅 hash 符号之前的 url 会被包含在请求中，后端如果没有做到对路由的全覆盖，也不会返回 404 错误；history 模式下，前端的 url 必须和实际向后端发起请求的 url 一致，如果没有对用的路由处理，将返回 404 错误。
 hash 模式和 history 模式都有各自的优势和缺陷，还是要根据实际情况选择性的使用。
 
-### 24. vue 初始化页面闪动问题
+### 24. Vue-router 跳转和 location.href 有什么区别
+使用 location.href= /url 来跳转，简单方便，但是刷新了页面；
+使用 history.pushState( /url ) ，无刷新页面，静态跳转；
+引进 router，然后使用 router.push( /url ) 来跳转，使用了 diff 算法，实现了按需加载，减少了 dom 的消耗。其实使用 router 跳转和使用 history.pushState() 没什么差别的，因为 vue-router 就是用了 history.pushState() ，尤其是在 history 模式下。
+
+### 25. vue 初始化页面闪动问题
 使用 vue 开发时，在 vue 初始化之前，由于 div 是不归 vue 管的，所以我们写的代码在还没有解析的情况下会容易出现花屏现象，看到类似于 {{ message }} 的字样，虽然一般情况下这个时间很短暂，但是还是有必要让解决这个问题的。
 首先：在 css 里加上以下代码：
 ```css
