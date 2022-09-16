@@ -294,7 +294,15 @@ key 是为 Vue 中 vnode 的唯一标记，通过这个 key，diff 操作可以�
 更准确：因为带 key 就不是就地复用了，在 sameNode 函数 a.key=== b.key 对比中可以避免就地复用的情况。所以会更加准确。
 更快速：利用 key 的唯一性生成 map 对象来获取对应节点，比遍历方式更快
 
-### 25. 路由的 hash 和 history 模式的区别
+### 25. DIFF 算法的原理
+在新老虚拟 DOM 对比时：
+首先，对比节点本身，判断是否为同一节点，如果不为相同节点，则删除该节点重新创建节点进行替换
+如果为相同节点，进行 patchVnode，判断如何对该节点的子节点进行处理，先判断一方有子节点一方没有子节点的情况(如果新的 children 没有子节点，将旧的子节点移除)
+比较如果都有子节点，则进行 updateChildren，判断如何对这些新老节点的子节点进行操作（diff 核心）。
+匹配时，找到相同的子节点，递归比较子节点
+在 diff 中，只对同层的子节点进行比较，放弃跨级的节点比较，使得时间复杂从 O(n³)降低值 O(n)，也就是说，只有当新旧children都为多个子节点时才需要用核心的 Diff 算法进行同层级比较。
+
+### 26. 路由的 hash 和 history 模式的区别
 Vue-Router 有两种模式：hash 模式和 history 模式。默认的路由模式是 hash 模式。
 1. **hash 模式** 
 简介： hash 模式是开发中默认的模式，它的 URL 带着一个#，例如： http://www.abc.com/#/vue，它的 hash 值就是#/vue。 
@@ -328,12 +336,12 @@ pushState() 可额外设置 title 属性供后续使用。
 hash 模式下，仅 hash 符号之前的 url 会被包含在请求中，后端如果没有做到对路由的全覆盖，也不会返回 404 错误；history 模式下，前端的 url 必须和实际向后端发起请求的 url 一致，如果没有对用的路由处理，将返回 404 错误。
 hash 模式和 history 模式都有各自的优势和缺陷，还是要根据实际情况选择性的使用。
 
-### 26. Vue-router 跳转和 location.href 有什么区别
+### 27. Vue-router 跳转和 location.href 有什么区别
 使用 location.href= /url 来跳转，简单方便，但是刷新了页面；
 使用 history.pushState( /url ) ，无刷新页面，静态跳转；
 引进 router，然后使用 router.push( /url ) 来跳转，使用了 diff 算法，实现了按需加载，减少了 dom 的消耗。其实使用 router 跳转和使用 history.pushState() 没什么差别的，因为 vue-router 就是用了 history.pushState() ，尤其是在 history 模式下。
 
-### 27. vue 初始化页面闪动问题
+### 28. vue 初始化页面闪动问题
 使用 vue 开发时，在 vue 初始化之前，由于 div 是不归 vue 管的，所以我们写的代码在还没有解析的情况下会容易出现花屏现象，看到类似于 {{ message }} 的字样，虽然一般情况下这个时间很短暂，但是还是有必要让解决这个问题的。
 首先：在 css 里加上以下代码：
 ```css
