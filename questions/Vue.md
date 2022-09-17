@@ -341,7 +341,15 @@ hash 模式和 history 模式都有各自的优势和缺陷，还是要根据实
 使用 history.pushState( /url ) ，无刷新页面，静态跳转；
 引进 router，然后使用 router.push( /url ) 来跳转，使用了 diff 算法，实现了按需加载，减少了 dom 的消耗。其实使用 router 跳转和使用 history.pushState() 没什么差别的，因为 vue-router 就是用了 history.pushState() ，尤其是在 history 模式下。
 
-### 28. vue 初始化页面闪动问题
+### 28. Vuex 有哪几种属性？
+有五种，分别是 State、 Getter、Mutation 、Action、Module
+state => 基本数据(数据源存放地)
+getters => 从基本数据派生出来的数据
+mutations => 提交更改数据的方法，同步
+actions => 像一个装饰器，包裹 mutations，使之可以异步。
+modules => 模块化 Vuex
+
+### 29. vue 初始化页面闪动问题
 使用 vue 开发时，在 vue 初始化之前，由于 div 是不归 vue 管的，所以我们写的代码在还没有解析的情况下会容易出现花屏现象，看到类似于 {{ message }} 的字样，虽然一般情况下这个时间很短暂，但是还是有必要解决这个问题的。
 首先：在 css 里加上以下代码：
 ```css
