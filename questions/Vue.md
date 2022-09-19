@@ -353,7 +353,30 @@ modules => 模块化 Vuex
 Vuex 中所有的状态更新的唯一途径都是 mutation，异步操作通过 Action 来提交 mutation 实现，这样可以方便地跟踪每一个状态的变化，从而能够实现一些工具帮助更好地了解我们的应用。每个 mutation 执行完成后都会对应到一个新的状态变更，这样devtools就可以打个快照存下来，然后就可以实现 time-travel了。
 如果 mutation 支持异步操作，就没有办法知道状态是何时更新的，无法很好的进行状态的追踪，给调试带来困难。
 
-### 30. vue 初始化页面闪动问题
+### 30. Vuex 的原理
+Vuex 是一个专为 Vue.js 应用程序开发的状态管理模式。每一个 Vuex 应用的核心就是 store（仓库）。“store” 基本上就是一个容器，它包含着你的应用中大部分的状态 ( state )。
+Vuex 的状态存储是响应式的。当 Vue 组件从 store 中读取状态的时候，若 store 中的状态发生变化，那么相应的组件也会相应地得到高效更新。
+改变 store 中的状态的唯一途径就是显式地提交 (commit) mutation。这样可以方便地跟踪每一个状态的变化。
+![Vuex 的原理](../assets/images/vuex.png)
+Vuex 为 Vue Components 建立起了一个完整的生态圈，包括开发中的 API 调用一环。
+1. 核心流程中的主要功能：
+Vue Components 是 vue 组件，组件会触发（dispatch）一些事件或动作，也就是图中的 Actions;
+在组件中发出的动作，肯定是想获取或者改变数据的，但是在 vuex 中，数据是集中管理的，不能直接去更改数据，所以会把这个动作提交（Commit）到 Mutations 中;
+然后 Mutations 就去改变（Mutate）State 中的数据;
+当 State 中的数据被改变之后，就会重新渲染（Render）到 VueComponents 中去，组件展示更新后的数据，完成一个流程。
+2. 各模块在核心流程中的主要功能：
+Vue Components∶ Vue 组件。HTML 页面上，负责接收用户操作等交互行为，执行 dispatch 方法触发对应 action 进行回应。
+dispatch∶操作行为触发方法，是唯一能执行action 的方法。
+actions∶ 操作行为处理模块。负责处理 Vue Components 接收到的所有交互行为。包含同步/异步操作，支持多个同名方法，按照注册的顺序依次触发。向后台 API 请求的操作就在这个模块中进行，包括触发其他 action 以及提交 mutation 的操作。该模块提供了Promise的封装，以支持 action 的链式触发。
+commit∶状态改变提交操作方法。对 mutation 进行提交，是唯一能执行 mutation 的方法。
+mutations∶状态改变操作方法。是 Vuex 修改 state 的唯一推荐方法，其他修改方式在严格模式下将会报错。该方法只能进行同步操作，且方法名只能全局唯一。操作之中会有一些 hook 暴露出来，以进行 state 的监控等。
+state∶页面状态管理容器对象。集中存储 Vue components 中 data 对象的零散数据，全局唯一，以进行统一的状态管理。页面显示所需的数据从该对象中进行读取，利用 Vue 的细粒度数据响应机制来进行高效的状态更新。
+getters∶state 对象读取方法。图中没有单独列出该模块，应该被包含在了 render 中，Vue Components 通过该方法读取全局 state 对象。
+
+总结：
+Vuex 实现了一个单向数据流，在全局拥有一个 State 存放数据，当组件要更改 State 中的数据时，必须通过 Mutation 提交修改信息，Mutation 同时提供了订阅者模式供外部插件调用获取 State 数据的更新。而当所有异步操作(常见于调用后端接口异步获取更新数据)或批量的同步操作需要走 Action ，但 Action 也是无法直接修改State 的，还是需要通过 Mutation 来修改State 的数据。最后，根据 State 的变化，渲染到视图上。
+
+### 31. vue 初始化页面闪动问题
 使用 vue 开发时，在 vue 初始化之前，由于 div 是不归 vue 管的，所以我们写的代码在还没有解析的情况下会容易出现花屏现象，看到类似于 {{ message }} 的字样，虽然一般情况下这个时间很短暂，但是还是有必要解决这个问题的。
 首先：在 css 里加上以下代码：
 ```css
