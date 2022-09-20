@@ -305,8 +305,8 @@ key 是为 Vue 中 vnode 的唯一标记，通过这个 key，diff 操作可以�
 ### 26. 路由的 hash 和 history 模式的区别
 Vue-Router 有两种模式：hash 模式和 history 模式。默认的路由模式是 hash 模式。
 1. **hash 模式** 
-简介： hash 模式是开发中默认的模式，它的 URL 带着一个#，例如： http://www.abc.com/#/vue，它的 hash 值就是#/vue。 
-特点：hash 值会出现在 URL 里面，但是不会出现在 HTTP 请求中，对 后端完全没有影响。所以改变 hash 值，不会重新加载页面。这种模式的浏览器支持度很好，低版本的 IE 浏览器也支持这种模式。hash 路由被称为是前端路由，已经成为 SPA（单页面应用）的标配。 原理： hash 模式的主要原理就是 onhashchange()事件：
+简介： hash 模式是开发中默认的模式，它的 URL 带着一个#，例如： http://www.abc.com/#/vue，它的 hash 值就是#/vue。
+特点：hash 值会出现在 URL 里面，但是不会出现在 HTTP 请求中，对 后端完全没有影响。所以改变 hash 值，不会重新加载页面。这种模式的浏览器支持度很好，低版本的 IE 浏览器也支持这种模式。hash 路由被称为是前端路由，已经成为 SPA（单页面应用）的标配。 原理： hash 模式的主要原理就是 onhashchange() 事件：
 ```js
 window.onhashchange = function (event) {
     console.log(event.oldURL, event.newURL);
@@ -330,7 +330,7 @@ const router = new VueRouter({
 3. **两种模式对比** 
 调用 history.pushState() 相比于直接修改 hash，存在以下优势: 
 pushState() 设置的新 URL 可以是与当前 URL 同源的任意 URL；而 hash 只可修改 # 后面的部分，因此只能设置与当前 URL 同文档的 URL；
-pushState() 设置的新 URL 可以与当前 URL 一模一样，这样也会把记录添加到栈中；而 hash 设置的新值必须与原来不一样才会触发动作将记录添加到栈中； 
+pushState() 设置的新 URL 可以与当前 URL 一模一样，这样也会把记录添加到栈中；而 hash 设置的新值必须与原来不一样才会触发动作将记录添加到栈中；
 pushState() 通过 stateObject 参数可以添加任意类型的数据到记录中；而 hash 只可添加短字符串；
 pushState() 可额外设置 title 属性供后续使用。
 hash 模式下，仅 hash 符号之前的 url 会被包含在请求中，后端如果没有做到对路由的全覆盖，也不会返回 404 错误；history 模式下，前端的 url 必须和实际向后端发起请求的 url 一致，如果没有对用的路由处理，将返回 404 错误。
@@ -342,7 +342,7 @@ hash 模式和 history 模式都有各自的优势和缺陷，还是要根据实
 引进 router，然后使用 router.push( /url ) 来跳转，使用了 diff 算法，实现了按需加载，减少了 dom 的消耗。其实使用 router 跳转和使用 history.pushState() 没什么差别的，因为 vue-router 就是用了 history.pushState() ，尤其是在 history 模式下。
 
 ### 28. Vuex 有哪几种属性？
-有五种，分别是 State、 Getter、Mutation 、Action、Module
+有五种，分别是 State、Getter、Mutation、Action、Module
 state => 基本数据(数据源存放地)
 getters => 从基本数据派生出来的数据
 mutations => 提交更改数据的方法，同步
@@ -376,7 +376,11 @@ getters∶state 对象读取方法。图中没有单独列出该模块，应该�
 总结：
 Vuex 实现了一个单向数据流，在全局拥有一个 State 存放数据，当组件要更改 State 中的数据时，必须通过 Mutation 提交修改信息，Mutation 同时提供了订阅者模式供外部插件调用获取 State 数据的更新。而当所有异步操作(常见于调用后端接口异步获取更新数据)或批量的同步操作需要走 Action ，但 Action 也是无法直接修改State 的，还是需要通过 Mutation 来修改State 的数据。最后，根据 State 的变化，渲染到视图上。
 
-### 31. vue 初始化页面闪动问题
+### 31. Vuex 和单纯的全局对象有什么区别？
+Vuex 的状态存储是响应式的。当 Vue 组件从 store 中读取状态的时候，若 store 中的状态发生变化，那么相应的组件也会相应地得到高效更新。
+不能直接改变 store 中的状态。改变 store 中的状态的唯一途径就是显式地提交 (commit) mutation。这样可以方便地跟踪每一个状态的变化，从而能够实现一些工具帮助更好地了解我们的应用。
+
+### 32. vue 初始化页面闪动问题
 使用 vue 开发时，在 vue 初始化之前，由于 div 是不归 vue 管的，所以我们写的代码在还没有解析的情况下会容易出现花屏现象，看到类似于 {{ message }} 的字样，虽然一般情况下这个时间很短暂，但是还是有必要解决这个问题的。
 首先：在 css 里加上以下代码：
 ```css
