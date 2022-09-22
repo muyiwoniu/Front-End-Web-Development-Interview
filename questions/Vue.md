@@ -392,7 +392,19 @@ Vuex 能做到数据的响应式，localstorage 不能
 刷新页面时 vuex 存储的值会丢失，localstorage 不会。
 注意：对于不变的数据确实可以用 localstorage 可以代替 vuex，但是当两个组件共用一个数据源（对象或数组）时，如果其中一个组件改变了该数据源，希望另一个组件响应该变化时，localstorage 无法做到，原因就是区别 1。
 
-### 33. vue 初始化页面闪动问题
+### 33. Redux 和 Vuex 有什么区别，它们的共同思想
+1. Redux 和 Vuex 区别
+Vuex 改进了 Redux 中的 Action 和 Reducer 函数，以 mutations 变化函数取代 Reducer，无需 switch，只需在对应的 mutation 函数里改变 state 值即可
+Vuex 由于 Vue 自动重新渲染的特性，无需订阅重新渲染函数，只要生成新的 State 即可
+Vuex 数据流的顺序是∶View 调用 store.commit 提交对应的请求到 Store 中对应的 mutation 函数 -> store 改变（vue 检测到数据变化自动渲染）
+通俗点理解就是，vuex 弱化 dispatch，通过 commit 进行 store 状态的一次更变；取消了 action 概念，不必传入特定的 action 形式进行指定变更；弱化 reducer，基于 commit 参数直接对数据进行转变，使得框架更加简易。
+2. 共同思想
+单—的数据源
+变化可以预测
+本质上：redux 与 vuex 都是对 mvvm 思想的服务，将数据从视图中抽离的一种方案
+形式上：vuex 借鉴了 redux，将 store 作为全局的数据中心，进行 mode 管理
+
+### 34. vue 初始化页面闪动问题
 使用 vue 开发时，在 vue 初始化之前，由于 div 是不归 vue 管的，所以我们写的代码在还没有解析的情况下会容易出现花屏现象，看到类似于 {{ message }} 的字样，虽然一般情况下这个时间很短暂，但是还是有必要解决这个问题的。
 首先：在 css 里加上以下代码：
 ```css
