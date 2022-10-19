@@ -19,4 +19,4 @@ Front-End-Web-Development-Interview
 | [浏览器.md](/questions/浏览器.md) | Front End Web Development Interview 浏览器 部分 | 浏览器 | 待完善 |
 | [计算机网络.md](/questions/计算机网络.md) | Front End Web Development Interview 计算机网络 部分 | 计算机网络 | 待完善 |
 | [HTML.md](/questions/HTML.md) | Front End Web Development Interview HTML 部分 | HTML | 已完结 |
-| [CSS.md](/questions/CSS.md) | Front End Web Development Interview CSS 部分 | CSS | 待添加 |
+| [CSS.md](/questions/CSS.md) | Front End Web Development Interview CSS 部分 | CSS | 待完善 |
