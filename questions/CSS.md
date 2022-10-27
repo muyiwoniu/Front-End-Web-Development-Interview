@@ -139,4 +139,58 @@ vw/vh 和百分比很类似，两者的区别：
 百分比（%）：大部分相对于祖先元素，也有相对于自身的情况比如（border-radius、translate 等)。
 vw/vm：相对于视窗的尺寸。
 
+### 8. 水平垂直居中的实现
+利用绝对定位，先将元素的左上角通过 top:50% 和 left:50% 定位到页面的中心，然后再通过 translate 来调整元素的中心点到页面的中心。
+该方法需要考虑浏览器兼容问题。
+```css
+.parent {
+    position: relative;
+}
 
+.child {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+```
+利用绝对定位，设置四个方向的值都为 0，并将 margin 设置为 auto，由于宽高固定，因此对应方向实现平分，可以实现水平和垂直方向上的居中。
+该方法适用于盒子有宽高的情况：
+```css
+.parent {
+    position: relative;
+}
+
+.child {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    margin: auto;
+}
+```
+利用绝对定位，先将元素的左上角通过 top:50% 和 left:50% 定位到页面的中心，然后再通过 margin 负值来调整元素的中心点到页面的中心。
+该方法适用于盒子宽高已知的情况
+```css
+.parent {
+    position: relative;
+}
+
+.child {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    margin-top: -50px; /* 自身 height 的一半 */ 
+    margin-left: -50px; /* 自身 width 的一半 */ 
+}
+```
+使用 flex 布局，通过 align-items:center 和 justify-content:center 设置容器的垂直和水平方向上为居中对齐，然后它的子元素也可以实现垂直和水平的居中。
+该方法要考虑兼容的问题，该方法在移动端用的较多：
+```css
+.parent {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+```
