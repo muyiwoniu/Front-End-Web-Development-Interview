@@ -253,3 +253,49 @@ Formatting context：块级上下⽂格式化，它是⻚⾯中的⼀块渲染�
 
 注意: 当定位元素 z-index:auto，生成盒在当前层叠上下文中的层级为 0，不会建立新的层叠上下文，除非是根元素。
 
+### 11. 如何解决 1px 问题？
+1px 问题指的是：在一些 Retina 屏幕 的机型上，移动端页面的 1px 会变得很粗，呈现出不止 1px 的效果。原因很简单——CSS 中的 1px 并不能和移动设备上的 1px 划等号。它们之间的比例关系有一个专门的属性来描述：
+> window.devicePixelRatio = 设备的物理像素 / CSS像素
+
+打开 Chrome 浏览器，启动移动端调试模式，在控制台去输出这个 devicePixelRatio 的值。这里选中 iPhone6/7/8 这系列的机型，输出的结果就是 2：
+![高清屏 1px 问题](../assets/images/%E9%AB%98%E6%B8%85%E5%B1%8F1px%E9%97%AE%E9%A2%98.jpg)
+这就意味着设置的 1px CSS 像素，在这个设备上实际会用 2 个物理像素单元来进行渲染，所以实际看到的一定会比 1px 粗一些。
+解决 1px 问题的三种思路：
+**思路一：直接写 0.5px**
+如果之前 1px 的样式这样写
+```css
+border: 1px solid #333;
+```
+可以先在 JS 中拿到 window.devicePixelRatio 的值，然后把这个值通过 JSX 或者模板语法给到 CSS 的 data 里，达到这样的效果（这里用 JSX 语法做示范）
+```jsx
+<div id="container" data-device={{window.devicePixelRatio}}></div>
+```
+然后就可以在 CSS 中用属性选择器来命中 devicePixelRatio 为某一值的情况，比如说这里尝试命中 devicePixelRatio 为 2 的情况：
+```css
+#container[data-device="2"] {
+    border: 0.5px solid #333;
+}
+```
+直接把 1px 改成 1/devicePixelRatio 后的值，这是目前为止最简单的一种方法。这种方法的缺陷在于兼容性不行，IOS 系统需要 8 及以上的版本，安卓系统则直接不兼容。
+**思路二：伪元素先放大后缩小**
+这个方法的可行性会更高，兼容性也更好。唯一的缺点是代码会变多。
+思路是先放大、后缩小：在目标元素的后面追加一个 ::after 伪元素，让这个元素布局为 absolute 之后、整个伸展开铺在目标元素上，然后把它的宽和高都设置为目标元素的两倍，border 值设为 1px。接着借助 CSS 动画特效中的放缩能力，把整个伪元素缩小为原来的 50%。此时，伪元素的宽高刚好可以和原有的目标元素对齐，而 border 也缩小为了 1px 的二分之一，间接地实现了 0.5px 的效果。
+代码如下：
+```css
+#container[data-device="2"] {
+    position: relative;
+}
+
+#container[data-device="2"]::after {
+    box-sizing: border-box;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 200%;
+    height: 200%;
+    content: "";
+    border: 1px solid #333;
+    transfrom: scale(0.5);
+    transform-origin: left top;
+}
+```
