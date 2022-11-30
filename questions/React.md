@@ -174,3 +174,22 @@ this.props 是组件之间沟通的一个接口，原则上来讲，它只能从
 过程没有副作用。
 不依赖外部状态。
 this.props 就是汲取了纯函数的思想。props 的不可变性就保证相同的输入，页面显示的内容是一样的，并且不会产生副作用。
+
+### 11. React 中怎么检验 props？验证 props 的目的是什么？
+React 为我们提供了 PropTypes 以供验证使用。当我们向 Props 传入的数据无效（向 Props 传入的数据类型和验证的数据类型不符）就会在控制台发出警告信息。它可以避免随着应用越来越复杂从而出现的问题。并且，它还可以让程序变得更易读。
+```jsx
+import PropTypes from 'prop-type';
+
+class Greeting extends React.Component {
+    render() {
+        return (
+            <h1>Hello, {this.props.name}</h1>
+        );
+    }
+}
+
+Greeting.propType = {
+    name: PropType.string
+};
+```
+当然，如果项目汇中使用了 TypeScript，那么就可以不用 PropTypes 来校验，而使用 TypeScript 定义接口来校验 props。
