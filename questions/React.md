@@ -193,3 +193,52 @@ Greeting.propType = {
 };
 ```
 当然，如果项目中使用了 TypeScript，那么就可以不用 PropTypes 来校验，而使用 TypeScript 定义接口来校验 props。
+
+### 12. React 废弃了哪些生命周期？为什么？
+被废弃的三个函数都是在 render 之前，因为 fber 的出现，很可能因为高优先级任务的出现而打断现有任务导致它们会被执行多次。另外的一个原因则是，React 想约束使用者，好的框架能够让人不得已写出容易维护和扩展的代码，这一点又是从何谈起，可以从新增加以及即将废弃的生命周期分析入手
+1. componentWillMount
+首先这个函数的功能完全可以使用 componentDidMount 和 constructor 来代替，异步获取的数据的情况上面已经说明了，而如果抛去异步获取数据，其余的即是初始化而已，这些功能都可以在 constructor 中执行，除此之外，如果在 willMount 中订阅事件，但在服务端这并不会执行 willUnMount 事件，也就是说服务端会导致内存泄漏，所以 componentWilIMount 完全可以不使用，但使用者有时候难免因为各种各样的情况在 componentWilMount中做一些操作，那么 React 为了约束开发者，干脆就抛掉了这个 API。
+2. componentWillReceiveProps
+在老版本的 React 中，如果组件自身的某个 state 跟其 props 密切相关的话，一直都没有一种很优雅的处理方式去更新 state，而是需要在 componentWilReceiveProps 中判断前后两个 props 是否相同，如果不同再将新的 props 更新到相应的 state 上去。这样做一来会破坏 state 数据的单一数据源，导致组件状态变得不可预测，另一方面也会增加组件的重绘次数。类似的业务需求也有很多，如一个可以横向滑动的列表，当前高亮的 Tab 显然隶属于列表自身的时，根据传入的某个值，直接定位到某个 Tab。为了解决这些问题，React 引入了第一个新的生命周期：getDerivedStateFromProps。它有以下的优点∶
+    - getDSFP 是静态方法，在这里不能使用 this，也就是一个纯函数，开发者不能写出副作用的代码。
+    - 开发者只能通过 prevState 而不是 prevProps 来做对比，保证了 state 和 props 之间的简单关系以及不需要处理第一次渲染时 prevProps 为空的情况。
+    - 基于第一点，将状态变化（setState）和昂贵操作（tabChange）区分开，更加便于 render 和 commit 阶段操作或者说优化。
+3. componentWillUpdate
+与 componentWillReceiveProps 类似，许多开发者也会在 componentWillUpdate 中根据 props 的变化去触发一些回调。但不论是 componentWilReceiveProps 还是 componentWilUpdate，都有可能在一次更新中被调用多次，也就是说写在这里的回调函数也有可能会被调用多次，这显然是不可取的。与 componentDidMount 类似，componentDidUpdate 也不存在这样的问题，一次更新中 componentDidUpdate 只会被调用一次，所以将原先写在 componentWillUpdate 中的回调迁移至 componentDidUpdate 就可以解决这个问题。
+另外一种情况则是需要获取 DOM 元素状态，但是由于在 fber 中，render 可打断，可能在 willMount 中获取到的元素状态很可能与实际需要的不同，这个通常可以使用第二个新增的生命函数的解决 getSnapshotBeforeUpdate(prevProps, prevState)
+4. getSnapshotBeforeUpdate(prevProps, prevState)
+返回的值作为 componentDidUpdate 的第三个参数。与 willMount 不同的是，getSnapshotBeforeUpdate 会在最终确定的 render 执行之前执行，也就是能保证其获取到的元素状态与 didUpdate 中获取到的元素状态相同。官方参考代码：
+```jsx
+class ScrollingList extends React.Component {
+    constructor(props) {
+        super(props);
+        this.listRef = React.createRef();
+    }
+
+    getSnapshotBeforeUpdate(prevProps, prevState) {
+        // 是否在 list 中添加新的 items ?
+        // 捕获滚动位置，以便稍后调整滚动位置
+        if (prevProps.list.length < this.props.list.length) {
+            const list = this.listRef.current;
+            return list.scrollHeight - list.scrollTop;
+        }
+        return null;
+    }
+
+    componentDidUpdate(prevProps, prevState, snapshot) {
+        // 如果 snapshot 有值，说明刚添加了新的 items,
+        // 调整滚动位置使得这些新 items 不会将旧的 items 推出视图。
+        // （这里的 snapshot 是 getSnapshotBeforeUpdate 的返回值）
+        if (snapshot !== null) {
+            const list = this.listRef.current;
+            list.scrollTop = list.scrollHeight - snapshot;
+        }
+    }
+
+    render() {
+        return (
+            <div ref={this.listRef}>{/* ...contents... */}</div>
+        );
+    }
+}
+```
