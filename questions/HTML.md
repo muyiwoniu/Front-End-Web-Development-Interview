@@ -158,3 +158,63 @@ Canvas 是画布，通过 Javascript 来绘制 2D 图形，是逐像素进行渲
 **dragleave**：事件主体是目标元素，在被拖放元素移出目标元素是触发。
 **drop**：事件主体是目标元素，在目标元素完全接受被拖放元素时触发。
 **dragend**：事件主体是被拖放元素，在整个拖放操作结束时触发。
+
+### 8. srcset 和 image-set
+响应式图片的作用：
+为使用不同分辨率的不同浏览器用户提供适合其浏览环境的图片大小的解决方案。
+之前的解决方法是使用 @media，但是 -webkit 提出的 image-set 和 srcset 同样可以解决问题。
+**srcset**
+响应式页面中经常用到根据屏幕密度设置不同的图片。这个时候肯定会用到image标签的 srcset 属性。srcset 属性用于设置不同屏幕密度下，image 自动加载不同的图片。用法如下：
+```html
+<img src="image-1x.png" srcset="image-2x.png 2x, image-3x.png 3x" />
+```
+使用上面的代码，就能实现在屏幕密度为 1x 的情况下加载 image-1x.png, 屏幕密度为 2x 时加载 image-2x.png。
+在 img 标签中，使用 srcset 属性使响应图像的尺寸调整变得更加简单。它使您可以定义同一图像的不同大小版本的列表，并提供有关每个图像大小的信息。然后由客户端（浏览器）决定加载合适尺寸的图片。
+这对浏览器没有任何影响，但会让您的编码更加易懂。另外，您可以创建更多不同大小（更大，更小）的图片版本，并且 srcset 属性中指定的源文件数量没有限制。
+注意：如果您创建的是纯矢量图形，最好将其导出 SVG 文件。因为 SVG 文件可无限扩展，无论分辨率如何，在所有屏幕上的显示效果都很好，且当前所有浏览器最新版本均支持。
+
+srcset属性中包括了图像地址信息和设备像素比（可以通过 window.devicePixelRatio 查看，且可以通过 CTRL + MOUSE 齿轮缩放网页来调整 devicePixelRatio 的大小），如下：
+```html
+<img 
+    src="image.jpg"
+    srcset="
+    image-3x.jpg 3x,
+    image-2x.jpg 2x,
+    image-1x.jpg 1x
+   " />
+```
+如果当前设备的像素比是1，则会显示图片 image-1x.jpg，通过缩放页面，当把页面放大到200%时，可以看到的当前显示的图片为已经被更新为image-2x.jpg。
+**sizes：用媒体查询方法来指定图像宽度**
+通常情况下，我们会通过指定不同的图像宽度（以像素为单位）来告诉浏览器当前设备应该使用哪个图片源。因为它为浏览器提供了更多的有关图像的信息，因此可以更好地决定选择哪个图像。
+对于图像宽度，请使用 w 而不是 x。
+首先看一段 HTML 代码：
+```html
+<img 
+  src="https://cloud4.gogoing.site/files/2020-08-21/bbc63bf5-6f56-4d0a-a996-72fff804725c.png"
+  sizes="(max-width: 376px) 375px, (max-width: 769px) 768px, 1024px"
+  srcset="
+    https://cloud3.gogoing.site/files/2020-08-21/bbc63bf5-6f56-4d0a-a996-72fff804725c.png 375w,
+    https://cloud2.gogoing.site/files/2020-08-21/69d2679d-eefe-434a-8755-7f8b09166bf3.png 768w,
+    https://cloud1.gogoing.site/files/2020-08-21/291087d7-beda-402f-9c28-b23e71beb32e.png 1024w"
+>
+```
+1. 这里我们使用了三种规格的图片来演示，分别是：375px, 768px 以及1024px 的图片。
+2. sizes 用来表示尺寸临界点，主要跟响应式尺寸有关。其语法为 sizes="[media query] [value], [media query] [value] ... etc"，这里所有的值都是指宽度值，且单位任意可以为 PX, VW, EM 甚至是 CSS3 中的计算值 CALC，这里的 sizes 属性表述为：表示当屏幕不大于 376px 时，图片宽度按照 375px 来计算（计算方式见下一条），当屏幕不大于 769px 时，图片宽度按照 768px 来计算，其余屏幕按照 1024px 来计算。
+3. 这里使用的 w 作为宽度描述符，其与 sizes 属性和屏幕密度比（devicePixelRatio）密切相关。比如：
+在普通的 PC 电脑上，屏幕像素比是1，sizes 属性计算值为 375px，那么，img 的实际宽度为 375 * 1 = 375w，因此，浏览器会加载 375px 这张图片。
+在 iphone678 这类机型中，屏幕像素比是2，sizes 属性计算值为 375px，那么，img 的实际宽度为 375 * 2 = 750w，此时，375w < 750w < 768w, 因此，浏览器会加载 768px 这张图片。
+iphone plus 和 iphone X 这类机型中，屏幕像素比是3，sizes 属性计算值为 375px，那么，img 的实际宽度为 375 * 3 = 1125w，此时，浏览器会加载 1024px 这张图片。
+
+**image-set**
+image-set 和 srcset 差不多，只不过是 image-set 写在 css 中，作用于背景图片。
+```css
+.img-container {
+    /* 对于不能识别 image-set 的使用默认的写法: */
+    background-image: url(image1.png);
+    /* 对于可以识别 image-set 的使用的写法: */
+    background-image: -webkit-image-set(
+    url(image1.png) 1x,
+    url(image2.png) 2x);
+    background-repeat: no-repeat;
+}
+```
