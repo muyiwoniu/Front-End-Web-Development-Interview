@@ -242,3 +242,23 @@ class ScrollingList extends React.Component {
     }
 }
 ```
+
+### 13. React 16.X 中 props 改变后在哪个生命周期中处理
+在 getDerivedStateFromProps 中进行处理。
+这个生命周期函数是为了替代 componentWillReceiveProps 存在的，所以在需要使用 componentWillReceiveProps 时，就可以考虑使用 getDerivedStateFromProps 来进行替代。
+两者的参数是不相同的，而 getDerivedStateFromProps 是一个静态函数，也就是这个函数不能通过 this 访问到 class 的属性，也并不推荐直接访问属性。而是应该通过参数提供的 nextProps 以及 prevState 来进行判断，根据新传入的 props 来映射到 state。
+需要注意的是，如果 props 传入的内容不需要影响到你的 state，那么就需要返回一个 null，这个返回值是必须的，所以尽量将其写到
+函数的末尾：
+```jsx
+static getDerivedStateFromProps(nextProps, prevState) {
+    const { type } = nextProps;
+    // 当传入的 type 发生变化时，更新 state
+    if (type !== prevState.type) {
+        return {
+            type,
+        };
+    }
+    // 否则，对于 state 不进行任何操作
+    return null;
+}
+```
