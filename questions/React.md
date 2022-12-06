@@ -262,3 +262,30 @@ static getDerivedStateFromProps(nextProps, prevState) {
     return null;
 }
 ```
+
+### 14. React 16 中新生命周期有哪些
+关于 React16 开始应用的新生命周期：
+![React 的生命周期](../assets/images/React-%E7%9A%84%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F.jpg)
+
+可以看出，React16 自上而下地对生命周期做了另一种维度的解读：
+Render 阶段：用于计算一些必要的状态信息。这个阶段可能会被 React 暂停，这一点和 React16 引入的 Fiber 架构（我们后面会重点讲解）是有关的；
+Pre-commit 阶段：所谓“commit”，这里指的是“更新真正的 DOM 节点”这个动作。所谓 Pre-commit，就是说我在这个阶段其实还并没有去更新真实的 DOM，不过 DOM 信息已经是可以读取的了；
+Commit 阶段：在这一步，React 会完成真实 DOM 的更新工作。Commit 阶段，我们可以拿到真实 DOM（包括 refs）。
+与此同时，新的生命周期在流程方面，仍然遵循“挂载”、“更新”、“卸载”这三个广义的划分方式。它们分别对应到：
+
+挂载过程：
+constructor
+getDerivedStateFromProps
+render
+componentDidMount
+
+更新过程：
+getDerivedStateFromProps
+shouldComponentUpdate
+render
+getSnapshotBeforeUpdate
+componentDidUpdate
+
+卸载过程：
+componentWillUnmount
+
