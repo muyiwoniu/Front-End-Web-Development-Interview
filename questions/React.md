@@ -289,3 +289,14 @@ componentDidUpdate
 卸载过程：
 componentWillUnmount
 
+### 15. React-Router 的实现原理是什么？
+客户端路由实现的思想：
+基于 hash 的路由：通过监听 hashchange 事件，感知 hash 的变化;
+改变 hash 可以直接通过 location.hash=xxx;
+基于 H5 history 路由：
+改变 url 可以通过 history.pushState 和 resplaceState 等，会将 URL 压入堆栈，同时能够应用 history.go() 等 API;
+监听 url 的变化可以通过自定义事件触发实现;
+react-router 实现的思想：
+基于 history 库来实现上述不同的客户端路由实现思想，并且能够保存历史记录等，磨平浏览器差异，上层无感知;
+通过维护的列表，在每次 URL 发生变化的回收，通过配置的路由路径，匹配到对应的 Component，并且 render。
+
