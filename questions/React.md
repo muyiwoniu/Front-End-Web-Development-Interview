@@ -300,3 +300,22 @@ react-router 实现的思想：
 基于 history 库来实现上述不同的客户端路由实现思想，并且能够保存历史记录等，磨平浏览器差异，上层无感知;
 通过维护的列表，在每次 URL 发生变化的回收，通过配置的路由路径，匹配到对应的 Component，并且 render。
 
+### 16. react-router 里的 Link 标签和 a 标签的区别
+从最终渲染的 DOM 来看，这两者都是链接，都是标签，区别是∶
+<Link>是 react-router 里实现路由跳转的链接，一般配合<Route>使用，react-router 接管了其默认的链接跳转行为，区别于传统的页面跳转，<Link> 的“跳转”行为只会触发相匹配的<Route>对应的页面内容更新，而不会刷新整个页面。
+<Link>做了 3 件事情:
+有 onclick 那就执行 onclick;
+click 的时候阻止 a 标签默认事件;
+根据跳转 href(即是 to)，用 history (web 前端路由两种方式之一，history & hash)跳转，此时只是链接变了，并没有刷新页面。
+而<a>标签就是普通的超链接了，用于从当前页面跳转到 href 指向的另一个页面(非锚点情况)。
+
+a 标签默认事件禁掉之后做了什么才实现了跳转?
+
+```js
+let domArr = document.getElementsByTagName('a');
+[...domArr].forEach(item => {
+    item.addEventListener('click', function() {
+        location.href = this.href;
+    })
+})
+```
