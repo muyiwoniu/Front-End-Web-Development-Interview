@@ -347,4 +347,5 @@ Vuex 数据流的顺序是∶View 调用 store.commit 提交对应的请求到 S
 变化可以预测
 本质上∶ redux 与 vuex 都是对 mvvm 思想的服务，将数据从视图中抽离的一种方案。
 
-
+### 20. Redux 中间件是怎么拿到 store 和 action? 然后怎么处理?
+redux 中间件本质就是一个函数柯里化。redux applyMiddleware Api 源码中每个 middleware 接受 2 个参数，Store 的 getState 函数和 dispatch 函数，分别获得 store 和 action，最终返回一个函数。该函数会被传入 next 的下一个 middleware 的 dispatch 方法，并返回一个接收 action 的新函数，这个函数可以直接调用 next （action），或者在其他需要的时刻调用，甚至根本不去调用它。调用链中最后一个 middleware 会接受真实的 store 的 dispatch 方法作为 next 参数，并借此结束调用链。所以，middleware 的函数签名是({ getState，dispatch }) => next => action。
