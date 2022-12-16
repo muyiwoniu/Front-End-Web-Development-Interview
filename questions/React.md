@@ -307,7 +307,7 @@ react-router 实现的思想：
 有 onclick 那就执行 onclick;
 click 的时候阻止 a 标签默认事件;
 根据跳转 href(即是 to)，用 history (web 前端路由两种方式之一，history & hash)跳转，此时只是链接变了，并没有刷新页面。
-而<a>标签就是普通的超链接了，用于从当前页面跳转到 href 指向的另一个页面(非锚点情况)。
+而 <a> 标签就是普通的超链接了，用于从当前页面跳转到 href 指向的另一个页面(非锚点情况)。
 
 a 标签默认事件禁掉之后做了什么才实现了跳转?
 
@@ -374,3 +374,41 @@ React Hooks 的限制主要有两条：
 那为什么不要在循环、条件或嵌套函数中调用 Hook 呢？因为 Hooks 的设计是基于数组实现。在调用时按顺序加入数组中，如果使用循环、条件或嵌套函数很有可能导致数组取值错位，执行错误的 Hook。当然，实质上 React 的源码里不是数组，是链表。
 这些限制会在编码上造成一定程度的心智负担，新手可能会写错，为了避免这样的情况，可以引入 ESLint 的 Hooks 检查插件进行预防。
 
+
+### 23. React diff 算法的原理是什么？
+实际上，diff 算法探讨的就是虚拟 DOM 树发生变化后，生成 DOM 树更新补丁的方式。它通过对比新旧两株虚拟 DOM 树的变更差异，将更新补丁作用于真实 DOM，以最小成本完成视图更新。
+![React diff](../assets/images/React-diff.jpg)
+
+具体的流程如下：
+真实的 DOM 首先会映射为虚拟 DOM；
+当虚拟 DOM 发生变化后，就会根据差距计算生成 patch，这个 patch 是一个结构化的数据，内容包含了增加、更新、移除等；
+根据 patch 去更新真实的 DOM，反馈到用户的界面上。
+![React diff 具体的流程](../assets/images/React-diff-%E5%85%B7%E4%BD%93%E7%9A%84%E6%B5%81%E7%A8%8B.jpg)
+
+一个简单的例子：
+```jsx
+import React from "react";
+export default class ExampleComponent extends React.Component {
+    render() {
+        if (this.props.isVisible) {
+            return <div className="visible">visible</div>
+        }
+        return <div className="hidden">hidden</div>
+    }
+}
+```
+这里，首先假定 ExampleComponent 可见，然后再改变它的状态，让它不可见 。映射为真实的 DOM 操作是这样的，React 会创建一个 div 节点。
+```html
+<div class="visible">visible</div>
+```
+当把 visbile 的值变为 false 时，就会替换 class 属性为 hidden，并重写内部的 innerText 为 hidden。这样一个生成补丁、更新差异的过程统称为 diff 算法。
+diff 算法可以总结为三个策略，分别从树、组件及元素三个层面进行复杂度的优化：
+策略一：忽略节点跨层级操作场景，提升比对效率。（基于树进行对比）
+这一策略需要进行树比对，即对树进行分层比较。树比对的处理手法是非常“暴力”的，即两棵树只对同一层次的节点进行比较，如果发现节点已经不存在了，则该节点及其子节点会被完全删除掉，不会用于进一步的比较，这就提升了比对效率。
+策略二：如果组件的 class 一致，则默认为相似的树结构，否则默认为不同的树结构。（基于组件进行对比）
+在组件比对的过程中：
+如果组件是同一类型则进行树比对；
+如果不是则直接放入补丁中。
+只要父组件类型不同，就会被重新渲染。这也就是为什么 shouldComponentUpdate、PureComponent 及 React.memo 可以提高性能的原因。
+策略三：同一层级的子节点，可以通过标记 key 的方式进行列表对比。（基于节点进行对比）
+元素比对主要发生在同层级中，通过标记节点操作生成补丁。节点操作包含了插入、移动、删除等。其中节点重新排序同时涉及插入、移动、删除三个操作，所以效率消耗最大，此时策略三起到了至关重要的作用。通过标记 key 的方式，React 可以直接移动 DOM 节点，降低内耗。
