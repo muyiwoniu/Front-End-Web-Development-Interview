@@ -430,3 +430,33 @@ React 的 diff 算法，触发更新的时机主要在 state 变化与 hooks 调
 以上是经典的 React diff 算法内容。自 React 16 起，引入了 Fiber 架构。为了使整个更新过程可随时暂停恢复，节点与树分别采用了 FiberNode 与 FiberTree 进行重构。fiberNode 使用了双链表的结构，可以直接找到兄弟节点与子节点。整个更新过程由 current 与 workInProgress 两株树双缓冲完成。workInProgress 更新完成后，再通过修改 current 相关指针指向新节点。
 Vue 的整体 diff 策略与 React 对齐，虽然缺乏时间切片能力，但这并不意味着 Vue 的性能更差，因为在 Vue 3 初期引入过，后期因为收益不高移除掉了。除了高帧率动画，在 Vue 中其他的场景几乎都可以使用防抖和节流去提高响应性能。
 
+### 26. react 最新版本解决了什么问题，增加了哪些东西
+React 16.x 的三大新特性 Time Slicing、Suspense、hooks
+Time Slicing（解决 CPU 速度问题）使得在执行任务的期间可以随时暂停，跑去干别的事情，这个特性使得 react 能在性能极其差的机器
+跑时，仍然保持有良好的性能；
+Suspense（解决网络 IO 问题）和 lazy 配合，实现异步加载组件。能暂停当前组件的渲染，当完成某件事以后再继续渲染，解决从 react 出生到现在都存在的「异步副作用」的问题，而且解决得非的优雅，使用的是「异步但是同步的写法」，这是最好的解决异步问题的方式提供了一个内置函数 componentDidCatch，当有错误发生时，可以友好地展示 fallback 组件; 可以捕捉到它的子元素（包括嵌套子元素）抛出的异常; 可以复用错误组件。
+1. React16.8
+加入 hooks，让 React 函数式组件更加灵活，hooks 之前，React 存在很多问题：
+在组件间复用状态逻辑很难。
+复杂组件变得难以理解，高阶组件和函数组件的嵌套过深。
+class 组件的 this 指向问题。
+难以记忆的生命周期。
+hooks 很好的解决了上述问题，hooks 提供了很多方法：
+useState 返回有状态值，以及更新这个状态值的函数。
+useEffect 接受包含命令式，可能有副作用代码的函数。
+useContext 接受上下文对象（从 React.createContext 返回的值）并返回当前上下文值。
+useReducer useState 的替代方案。接受类型为 (state，action) => newState 的 reducer，并返回与 dispatch 方法配对的当前状态。
+useCalLback 返回一个回忆的 memoized 版本，该版本仅在其中一个输入发生更改时才会更改。纯函数的输入输出确定性 o useMemo 纯的一个记忆函数 o useRef 返回一个可变的 ref 对象，其 Current 属性被初始化为传递的参数，返回的 ref 对象在组件的整个生命周期内保持不变。
+useImperativeMethods 自定义使用 ref 时公开给父组件的实例值。
+useMutationEffect 更新兄弟组件之前，它在 React 执行其 DOM 改变的同一阶段同步触发。
+useLayoutEffect DOM 改变后同步触发。使用它来从 DOM 读取布局并同步重新渲染。
+2. React16.9
+重命名 Unsafe 的生命周期方法。新的 UNSAFE_前缀将有助于在代码 review 和 debug 期间，使这些有问题的字样更突出废弃 javascrip:形式的 URL。以 javascript:开头的 URL 非常容易遭受攻击，造成安全漏洞。
+废弃"Factory"组件。 工厂组件会导致 React 变大且变慢。
+act() 也支持异步函数，并且你可以在调用它时使用 await。
+使用 <React.ProfiLer> 进行性能评估。在较大的应用中追踪性能回归可能会很方便。
+（3）React16.13.0
+支持在渲染期间调用 setState，但仅适用于同一组件。
+可检测冲突的样式规则并记录警告。
+废弃 unstable_createPortal，使用 CreatePortal。
+将组件堆栈添加到其开发警告中，使开发人员能够隔离 bug 并调试其程序，这可以清楚地说明问题所在，并更快地定位和修复错误。
