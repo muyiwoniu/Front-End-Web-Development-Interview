@@ -455,8 +455,17 @@ useLayoutEffect DOM 改变后同步触发。使用它来从 DOM 读取布局并�
 废弃"Factory"组件。 工厂组件会导致 React 变大且变慢。
 act() 也支持异步函数，并且你可以在调用它时使用 await。
 使用 <React.ProfiLer> 进行性能评估。在较大的应用中追踪性能回归可能会很方便。
-（3）React16.13.0
+3. React16.13.0
 支持在渲染期间调用 setState，但仅适用于同一组件。
 可检测冲突的样式规则并记录警告。
 废弃 unstable_createPortal，使用 CreatePortal。
 将组件堆栈添加到其开发警告中，使开发人员能够隔离 bug 并调试其程序，这可以清楚地说明问题所在，并更快地定位和修复错误。
+
+### 27. 在 React 中页面重新加载时怎样保留数据？
+这个问题就设计到了数据持久化，主要的实现方式有以下几种：
+Redux：将页面的数据存储在 redux 中，在重新加载页面时，获取 Redux 中的数据；
+data.js：使用 webpack 构建的项目，可以建一个文件，data.js，将数据保存 data.js 中，跳转页面后获取；
+sessionStorge：在进入选择地址页面之前，componentWillUnMount 的时候，将数据存储到 sessionStorage 中，每次进入页面判断 sessionStorage 中有没有存储的那个值，有，则读取渲染数据；没有，则说明数据是初始化的状态。返回或进入除了选择地址以外的页面，清掉存储的 sessionStorage，保证下次进入是初始化的数据；
+history API：History API 的 pushState 函数可以给历史记录关联一个任意的可序列化 state，所以可以在路由 push 的时候将当前页面的一些信息存到 state 中，下次返回到这个页面的时候就能从 state 里面取出离开前的数据重新渲染。react-router 直接可以支持。这个方法适合一些需要临时存储的场景。
+
+
