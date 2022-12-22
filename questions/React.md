@@ -470,3 +470,33 @@ history API：History API 的 pushState 函数可以给历史记录关联一个�
 
 ### 28. 为什么使用 jsx 的组件中没有看到使用 react 却需要引入 react？
 本质上来说 JSX 是 React.createElement(component, props, ...children)方法的语法糖。在 React 17 之前，如果使用了 JSX，其实就是在使用 React， babel 会把组件转换为 CreateElement 形式。在 React 17 之后，就不再需要引入，因为 babel 已经可以帮我们自动引入 react。
+
+### 29. Redux 中间件是什么？接受几个参数？柯里化函数两端的参数具体是什么？
+Redux 的中间件提供的是位于 action 被发起之后，到达 reducer 之前的扩展点，换而言之，原本 view -→> action -> reducer -> store 的数据流加上中间件后变成了 view -> action -> middleware -> reducer -> store ，在这一环节可以做一些"副作用"的操作，如异步请求、打印日志等。
+applyMiddleware 源码：
+```jsx
+export default function applyMiddleware(...middlewares) {
+    return createStore => (...args) => {
+        // 利用传入的 createStore 和 reducer 创建一个store
+        const store = createStore(...args);
+        let dispatch = () => {
+            throw new Error();
+        }
+        const middlewareAPI = {
+            getState: store.getState,
+            dispatch: (...args) => dispatch(...args)
+        }
+        // 让每个 middleware 带着 middlewareAPI 这个参数分别执行一遍
+        const chain = middlewares.map(middleware => middleware(middlewareAPI));
+        // 接着 compose 将 chain 中的所有匿名函数，组装成一个新的函数，即新的 dispatch
+        dispatch = compose(...chain)(store.dispatch);
+        return {
+            ...store,
+            dispatch
+        }
+    }
+}
+```
+从 applyMiddleware 中可以看出∶
+redux 中间件接受一个对象作为参数，对象的参数上有两个字段 dispatch 和 getState，分别代表着 Redux Store 上的两个同名函数。
+柯里化函数两端一个是 middewares，一个是 store.dispatch
