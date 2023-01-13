@@ -165,3 +165,23 @@
 
 
 
+
+#### 9. *HTML5* 的 *form* 如何关闭自动完成功能？
+
+>参考答案：
+>
+>*HTML* 的输入框可以拥有自动完成的功能，当你往输入框输入内容的时候，浏览器会从你以前的同名输入框的历史记录中查找出类似的内容并列在输入框下面，这样就不用全部输入进去了，直接选择列表中的项目就可以了。
+>
+>使用 *autocomplete="off"*（给不想要提示的 *form* 或某个 *input* 设置为 *autocomplete=off*。）
+>
+>很多时候，需要对客户的资料进行保密，防止浏览器软件或者恶意插件获取到；
+>
+>可以在 *input* 中加入 *autocomplete=“off”* 来关闭记录系统需要保密的情况下可以使用此参数
+>
+>提示：*autocomplete* 属性有可能在 *form* 元素中是开启的，而在 *input* 元素中是关闭的。
+>
+>注意：*autocomplete* 适用于 \<form> 标签，以及以下类型的 \<input> 标签：*text, search, url, telephone, email, password, datepickers, range* 以及 *color*。
+
+
+
+
