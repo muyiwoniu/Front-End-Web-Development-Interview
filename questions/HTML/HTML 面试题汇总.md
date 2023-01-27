@@ -388,3 +388,107 @@
 
 
 
+#### 22. *html* 常见兼容性问题？
+
+>参考答案：
+>
+>1. *PNG24* 位的图片在 *IE6* 浏览器上出现背景
+>
+>解决方案：做成 *PNG8*，也可以引用一段脚本处理。
+>
+>2. 浏览器默认的 *margin* 和 *padding* 不同
+>
+>解决方案：使用 *CSS* 重置文件。
+>
+>3. *IE6* 双边距 *bug*
+>
+>在 *IE6* 下，如果对元素设置了浮动，同时又设置了 *margin-left* 或 *margin-right*，*margin* 值会加倍。
+>
+>```css
+>#box{ 
+>  float:left; 
+>  width:10px; 
+>  margin:10px;
+>}
+>```
+>
+>这种情况之下 *IE* 会产生 *20px* 的距离
+>
+>解决方案：在 *float* 的标签样式控制中加入 
+>
+>```css
+>_display:inline;
+>```
+>
+>将其转化为行内属性。( _ 这个符号只有 *IE6* 会识别）
+>
+>4. 渐进识别的方式，从总体中逐渐排除局部。
+>
+>首先，巧妙的使用 “\9” 这一标记，将 *IE* 游览器从所有情况中分离出来。
+>
+>接着，再次使用 “+” 将 *IE8* 和 *IE7、IE6* 分离开来，这样 *IE8* 已经独立识别。
+>
+>```css
+>.bb{    
+>	 background-color:#f1ee18; /*所有识别*/    
+>	.background-color:#00deff\9; /*IE6、7、8 识别*/    
+>	+background-color:#a200ff; /*IE6、7 识别*/    
+>	_background-color:#1e0bd1; /*IE6 识别*/
+>}
+>```
+>
+>5. *IE* 下，获取自定义属性用获取常规
+>
+>*IE* 下，可以使属性的方法来获取自定义属性用获取常规，也可以使用 *getAttribute( )* 方法获取自定义属性，*Firefox* 下，只能使用 *getAttribute( )* 方法获取自定义属性
+>
+>解决方法：统一通过 *getAttribute( )* 方法获取自定义属性
+>
+>6. *event* 对象的区别
+>
+>*IE* 下，*event* 对象有 *x、y* 属性，但是没有 *pageX、pageY* 属性，*Firefox* 下，*event* 对象有 *pageX、pageY* 属性，但是没有 *x、y* 属性。
+>
+>解决方法：（条件注释）缺点是在 *IE* 浏览器下可能会增加额外的 *HTTP* 请求数。
+>
+>7. *Chrome 12px* 像素
+>
+>*Chrome* 中文界面下默认会将小于 *12px* 的文本强制按照 *12px* 显示
+>
+>解决方法：可通过加入 *CSS* 属性 *-webkit-text-size-adjust: none;* 解决。
+>
+>8. *hover* 和 *active* 失效
+>
+>超链接访问过后 *hover* 样式就不出现了，被点击访问过的超链接样式不在具有 *hover* 和 *active* 了
+>
+>解决方法：改变 *CSS* 属性的排列顺序 *L-V-H-A*
+>
+>```css
+>a:link {}
+>a:visited {}
+>a:hover {}
+>a:active {}
+>```
+>
+>9. 怪异模式问题
+>
+>漏写 *DTD* 声明，*Firefox* 仍然会按照标准模式来解析网页，但在 *IE* 中会触发怪异模式。
+>
+>为避免怪异模式给我们带来不必要的麻烦，最好养成书写 *DTD* 声明的好习惯。
+>
+>现在可以使用 *HTML5*, 推荐的写法：\<!DOCTYPE html>
+>
+>10. 上下 *margin* 重合问题
+>
+>*IE* 和 *FireFox* 都存在，相邻的两个 *div* 的 *margin-left* 和 *margin-right* 不会重合，
+>
+>但是 *margin-top* 和 *margin-bottom* 却会发生重合。
+>
+>解决方法：养成良好的代码编写习惯，同时采用 *margin-top* 或者同时采用 *margin-bottom*。
+>
+>11. *IE6* 对 *png* 图片格式支持不好
+>
+>解决方案：引用一段脚本处理
+
+
+
+
+
