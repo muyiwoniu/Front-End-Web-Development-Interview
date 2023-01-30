@@ -536,3 +536,29 @@
 
 
 
+#### 25. *HTML5* 为什么只需要写 \<!DOCTYPE HTML>？
+
+>参考答案：
+>
+>为什么 *HTML5* 的顶部只需要一段
+>
+>```html
+><!DOCTYPE html>
+>```
+>
+>*HTML4* 却需要很长的一段
+>
+>```html
+><!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+>```
+>
+>其主要原因，是因为 *HTML5* 不基于 *SGML*，所以不需要引用 *DTD*。
+>
+>在 *HTML 4.01* 中，\<!DOCTYPE> 声明引用 *DTD*，因为 *HTML 4.01* 基于 *SGML*。
+>
+>*DTD* 规定了标记语言的规则，这样浏览器才能正确地呈现内容。
+
+
+
+
+
