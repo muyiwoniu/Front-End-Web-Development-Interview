@@ -576,3 +576,51 @@
 
 
 
+
+#### 27. *HTML5* 引入什么新的表单属性？
+
+>参考答案：
+>
+>***form* 新属性**：
+>
+>- *autocomplete*：属性规定表单是否应该启用自动完成功能。*autocomplete* 属性适用于 \<form>，以及下面的 \<input>类型：
+>
+>*text, search, url, telephone, email, password, date，pickers, range* 以及 *color*。语法是 \<form autocomplete="on|off">
+>
+>- *novalidate*：如果使用该属性，则提交表单时不进行内容的验证。*novalidate* 属性适用于：\<form>，以及以下类型的 \<input> 标签：*text, search, url, telephone, email, password, date pickers, range* 以及 *color*。语法：*novalidate="novalidate"*
+>
+>***input* 新属性**：
+>
+>- *autocomplete*：同上
+>- *autofocus*：规定输入字段在页面加载时是否获得焦点，加载完成后，光标马上定位在该 *input*
+>
+>- *form*：*form* 属性的值必须是其所属表单的 *id*。如需引用一个以上的表单，请使用空格分隔的列表。
+>
+>- *formaction*：属性覆盖 *form* 元素的 *action* 属性，比如两个提交按钮的时候，一个是正常提交，一个是管理员提交。该属性适用于 *type="submit"* 以及 *type="image"*。语法是 *formaction="#"*
+>
+>- *formenctype：formenctype* 属性覆盖 *form* 元素的 *enctype* 属性。该属性与 *type="submit"* 和 *type="image"* 配合使用。属性规定在发送到服务器之前应该如何对表单数据进行编码。
+>
+>- *formmethod*：覆盖表单的 method 属性。适用于 type=“submit” 和 type=“image”
+>
+>- *formnovalidate：formnovalidate* 属性覆盖 *form* 元素的 *novalidate* 属性。如果使用该属性，则提交表单时按钮不会执行验证过程。
+>
+>- *formtarget*：覆盖表单的 *target* 属性。适用于 *type="submit"* 和 *type="image"*， 该属性规定在何处打开 *action URL*。
+>
+>- *height* 和 *width*：*height* 和 *width* 属性规定用于 *image* 类型的 \<input> 标签的图像高度和宽度。
+>
+>- *list*：引用包含输入字段的预定义选项的 *datalist* 。
+>
+>- *min* 和 *max*：*min* 属性与 *max* 属性配合使用，可创建合法值范围，两个要一对用。语法是选择 *0-10* 数字，例如：\<input type="number" name="points" min="0" max="10" />
+>
+>- multiple：如果使用该属性，则允许一个以上的值，比如上传文件的时候，设置这个属性后可以一次选择几个图片；multiple 属性适用于以下类型的 `<input>`标签：email 和 file。
+>
+>- *pattern (regexp)*：描述了一个正则表达式用于验证 \<input> 元素的值，*pattern* 属性适用于以下 \<input> 类型：*text, search, url, telephone, email* 以及 *password*。
+>
+>- *placeholder*：提供可描述输入字段预期值的提示信息 (*hint*)。该提示会在输入字段为空时显示，并会在字段获得焦点时消失。
+>
+>- *required*：规定必需在提交之前填写输入字段。 如果使用该属性，则字段是必填（或必选）的。
+>
+>- *step*：为输入域规定合法的数字间隔。 如果 *step="3"*，则合法的数是 *-3、0、3、6* 等。*step* 属性可以与 *max* 和 *min* 属性创建一个区域值。
+
+
+
