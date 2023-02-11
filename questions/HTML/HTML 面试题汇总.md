@@ -756,3 +756,30 @@
 
 
 
+#### 33. 如何处理 *HTML5* 新标签兼容问题
+
+>参考答案：
+>
+>主要有两种方式：
+>
+>方法 1：实现标签被识别
+>
+>通过 *document.createElement(tagName)* 方法即可让浏览器识别新标签，浏览器支持新标签后，还可以为新标签添加 *CSS* 样式。
+>
+>方法 2：*JavaScript* 解决方案
+>
+>使用 *html5shim* 框架，在`<head>`中调用以下代码：
+>
+>```js
+><!--[if lt IE 9]>
+>	<script> src="http://html5shim.googlecode.com/svn/trunk/html5.js"</script>
+><![endif]-->
+>```
+>
+>
+>当然也可以直接把这个文件下载到自己的网站上，但这个文件必须在 *head* 标签中调用。
+
+
+
+
+
