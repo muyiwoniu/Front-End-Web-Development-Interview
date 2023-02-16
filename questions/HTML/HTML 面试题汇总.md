@@ -840,6 +840,16 @@
 
 
 
+#### 38. 行内元素有哪些？块级元素有哪些？空（void）元素有哪些？
+
+>参考答案：
+>
+>- 行内元素：最大的特点就是共享一行，常见的有 *span a em i b strong abbr input select* 等
+>- 块级元素：最大的特点就是独占一行，常见的有 *header footer nav section article aside div p ul li ol dl table* 等
+>- 空元素：就是没有内容的 *HTML* 元素，比较常见的空元素有 *img、link、meta、br、hr*
+
+
+
 
 
 
