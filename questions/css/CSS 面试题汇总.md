@@ -59,3 +59,59 @@
 > - flex属性是flex-grow, flex-shrink 和 flex-basis的简写，默认值为0 1 auto。后两个属性可选。
 > - align-self 属性允许单个项目有与其他项目不一样的对齐方式，可覆盖 align-items 属性。默认值为 *auto*，表示继承父元素的align-items属性，如果没有父元素，则等同于stretch。
 
+
+
+### 4. 怎么让一个 *div* 水平垂直居中
+
+> 参考答案：
+>
+> 水平垂直居中有好多种实现方式，主要就分为两类不定宽高和定宽高 以在 *body* 下插入一个 *div* 为例
+>
+> **定宽高** 
+>
+> 使用定位 + *margin*
+>
+> ```js
+> element.style {
+>  position: absolute;
+>  left: 50%;
+>  top: 50%;
+>  margin-left: -250px;
+>  margin-top: -250px;
+>  width: 500px;
+>  height: 500px;
+>  background: yellow;
+>  z-index: 1;
+> }
+> ```
+>
+> 使用定位 + *transfrom*
+>
+> ````js
+> element.style {
+>  position: absolute;
+>  left: 50%;
+>  top: 50%;
+>  width: 500px;
+>  height: 500px;
+>  background: yellow;
+>  z-index: 1;
+>  transform: translate3d(-50%,-50%,0);
+> }
+> ````
+>
+> **不定宽高**
+>
+> 不定宽高的方法基本都适用于定宽高的情况 这里把 *div* 的宽高按照内容展开，使用定位 + *transform* 同样是适用的
+>
+> ```js
+> element.style {
+>  position: absolute;
+>  left: 50%;
+>  top: 50%;
+>  background: yellow;
+>  z-index: 1;
+>  transform: translate3d(-50%,-50%,0);
+> }
+> ```
+
