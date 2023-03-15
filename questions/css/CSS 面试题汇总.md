@@ -127,3 +127,23 @@
 >
 > - 性能： displaynone : 修改元素会造成文档回流,读屏器不会读取display: none元素内容，性能消耗较大 visibility:hidden: 修改元素只会造成本元素的重绘,性能消耗较少读屏器读取visibility: hidden元素内容 opacity: 0 ： 修改元素会造成重绘，性能消耗较少
 
+
+
+### 6. 已知如下代码，如何修改才能让图片宽度为 *300px* ？注意下面代码不可修改。
+
+```js
+<img src="1.jpg" style="width:480px!important;”>
+```
+
+> 参考答案：
+>
+> **CSS 方法** 
+>
+> - *max-width:300px;* 覆盖其样式
+> - *transform: scale(0.625)* 按比例缩放图片； 
+> - 利用 *CSS* 动画的样式优先级高于 *!important* 的特性
+>
+> **JS 方法** 
+>
+> - *document.getElementsByTagName("img")[0].setAttribute("style","width:300px!important;")*
+
