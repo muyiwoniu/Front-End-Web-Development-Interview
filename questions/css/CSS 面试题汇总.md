@@ -345,3 +345,13 @@
 > <img src="https://xiejie-typora.oss-cn-chengdu.aliyuncs.com/2021-11-03-010804.png" alt="image-20210816174742449" style="zoom:50%;" />
 
 
+
+### 14. 分析比较 *opacity: 0、visibility: hidden、display: none* 优劣和适用场景
+
+> 参考答案：
+>
+> 1. display: none (不占空间，不能点击)（场景，显示出原来这里不存在的结构）
+> 2. visibility: hidden（占据空间，不能点击）（场景：显示不会导致页面结构发生变动，不会撑开）
+> 3. opacity: 0（占据空间，可以点击）（场景：可以跟transition搭配）
+
+
