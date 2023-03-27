@@ -406,3 +406,32 @@
 > - `inherit` 规定应该从父元素继承 position 属性的值。
 > - `sticky` 粘性定位，当元素在容器中被滚动超过指定的偏移值时，元素在容器内固定在指定位置。
 
+
+
+### 18. 如何用 *CSS* 实现一个三角形
+
+> 参考答案：
+>
+> 可以利用 border 属性
+>
+> 利用盒模型的 `border` 属性上下左右边框交界处会呈现出平滑的斜线这个特点，通过设置不同的上下左右边框宽度或者颜色即可得到三角形或者梯形。
+>
+> 如果想实现其中的任一个三角形，把其他方向上的 `border-color` 都设置成透明即可。
+>
+> 示例代码如下：
+>
+> ```html
+> <div></div>
+> ```
+>
+> ```css
+> div{
+> width: 0;
+> height: 0;
+> border: 10px solid red;
+> border-top-color: transparent;
+> border-left-color: transparent;
+> border-right-color: transparent;
+> }
+> ```
+
