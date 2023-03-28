@@ -435,3 +435,32 @@
 > }
 > ```
 
+
+
+### 19. 如何实现一个自适应的正方形
+
+> 参考答案：
+>
+> **方法1：利用 CSS3 的 vw 单位**
+>
+> `vw` 会把视口的宽度平均分为 100 份
+>
+> ```
+> .square {
+>  width: 10vw;
+>  height: 10vw;
+>  background: red;
+> }
+> ```
+>
+> **方法2：利用 margin 或者 padding 的百分比计算是参照父元素的 width 属性**
+>
+> ```
+> .square {
+>  width: 10%;
+>  padding-bottom: 10%; 
+>  height: 0; // 防止内容撑开多余的高度
+>  background: red;
+> }
+> ```
+
