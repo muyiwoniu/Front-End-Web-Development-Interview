@@ -648,3 +648,53 @@
 >
 > 理论上两者的主要区别是二者的盒子宽高是否包括元素的边框和内边距。当用CSS给给某个元素定义高或宽时，IE盒模型中内容的宽或高将会包含内边距和边框，而W3C盒模型并不会。
 
+
+
+### 27. 如何避免重绘或者重排？
+
+> 参考答案：
+>
+> 1. **集中改变样式**
+>
+> 我们往往通过改变 class 的方式来集中改变样式
+>
+> ```
+> // 判断是否是黑色系样式
+> const theme = isDark ? 'dark' : 'light'
+> 
+> // 根据判断来设置不同的class
+> ele.setAttribute('className', theme)
+> ```
+>
+> 2. **使用 DocumentFragment**
+>
+> 我们可以通过createDocumentFragment创建一个游离于DOM树之外的节点，然后在此节点上批量操作，最后插入DOM树中，因此只触发一次重排
+>
+> ```
+> var fragment = document.createDocumentFragment();
+> 
+> for (let i = 0;i<10;i++){
+>   let node = document.createElement("p");
+>   node.innerHTML = i;
+>   fragment.appendChild(node);
+> }
+> 
+> document.body.appendChild(fragment);
+> ```
+>
+> 3. **提升为合成层**
+>
+> 将元素提升为合成层有以下优点：
+>
+> - 合成层的位图，会交由 GPU 合成，比 CPU 处理要快
+> - 当需要 repaint 时，只需要 repaint 本身，不会影响到其他的层
+> - 对于 transform 和 opacity 效果，不会触发 layout 和 paint
+>
+> 提升合成层的最好方式是使用 CSS 的 will-change 属性：
+>
+> ```
+> #target {
+>   will-change: transform;
+> }
+> ```
+
