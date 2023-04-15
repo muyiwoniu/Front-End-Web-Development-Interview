@@ -783,3 +783,23 @@
 >- 确定显示内容的优先级（分层次渲染）——为了尽快将页面呈现给用户，页面只包含基本的最少量的 CSS、脚本和内容，然后可以使用延迟加载脚本或监听`DOMContentLoaded`/`load`事件加载其他资源和内容。
 >- 异步加载 HTML 片段——当页面通过后台渲染时，把 HTML 拆分，通过异步请求，分块发送给浏览器。
 
+
+
+### 34. *CSS3* 新增了那些东西？
+
+>参考答案：
+>
+>*CSS3* 新增东西众多，这里列举出一些关键的新增内容：
+>
+>- 选择器
+>- 盒子模型属性：*border-radius、box-shadow、border-image*
+>- 背景：*background-size、background-origin、background-clip*
+>- 文本效果：*text-shadow、word-wrap*
+>- 颜色：新增 *RGBA，HSLA* 模式
+>- 渐变：线性渐变、径向渐变
+>- 字体：*@font-face*
+>- 2D/3D转换：*transform、transform-origin*
+>- 过渡与动画：*transition、@keyframes、animation*
+>- 多列布局
+>- 媒体查询
+
