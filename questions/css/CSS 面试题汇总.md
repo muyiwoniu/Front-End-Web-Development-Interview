@@ -803,3 +803,24 @@
 >- 多列布局
 >- 媒体查询
 
+
+### 35. 实现一根只有 *1px* 的长线怎么实现?
+
+>参考答案：
+>
+>实现的方式很多，下面是一种参考方案：
+>
+>```css
+>.line {
+>width: 100%;
+>height: 1px;
+>overflow: hidden;
+>font-size: 0px; 
+>border-bottom: dashed 1px #ccc;
+>}
+>```
+>
+>```html
+><div class="line"></div>
+>```
+
