@@ -824,3 +824,21 @@
 ><div class="line"></div>
 >```
 
+
+
+### 36. *box-sizing* 有什么作用？
+
+>参考答案：
+>
+>*box-sizing* 是用于告诉浏览器如何计算一个元素是总宽度和总高度，主要用来切换标准盒模型和 IE 盒子。
+>
+>- 标准盒模型 box-sizing: content-box
+>  content-box:
+>  width  = content width;
+>  height = content height
+>
+>- IE盒模型      box-sizing: border-box
+>  border-box:
+>  width  = border + padding + content width
+>  heigth = border + padding + content heigth
+
