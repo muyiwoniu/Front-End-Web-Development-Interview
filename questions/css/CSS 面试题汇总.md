@@ -842,3 +842,15 @@
 >  width  = border + padding + content width
 >  heigth = border + padding + content heigth
 
+
+
+### 37. *img* 标签在页面中有 *1px* 的边框，怎么处理
+
+> 参考答案：
+>
+> ```css
+> img{
+> 	border: 0;
+> }
+> ```
+
