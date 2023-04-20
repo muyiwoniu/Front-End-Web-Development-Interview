@@ -868,3 +868,40 @@
 >
 > 设置 *margin-left* 为 *calc(50% - 50px);*
 
+
+
+### 39. 我有5个div在一行，我要让div与div直接间距10px且最左最右两边的div据边框10px，同时在我改变窗口大小时，这个10px不能变，div根据窗口改变大小（长天星斗）
+
+> 参考答案：
+>
+> ```css
+> *{
+> margin: 0;
+> }
+> .container {
+> display: flex;
+> }
+> .container>div{
+> outline: 1px solid;
+> margin: 0 5px;
+> flex-grow: 1;
+> }
+> 
+> .container>div:first-child {
+> margin-left: 10px;
+> }
+> .container>div:last-child {
+> margin-right: 10px;
+> }
+> ```
+>
+> ```html
+> <div class="container">
+> <div>1</div>
+> <div>2</div>
+> <div>3</div>
+> <div>4</div>
+> <div>5</div>
+> </div>
+> ```
+
