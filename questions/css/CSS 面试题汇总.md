@@ -906,13 +906,64 @@
 > ```
 
 
-
-### 40. *bootstrap* 响应式的原理是什么
+### 40. 什么是响应式设计
 
 > 参考答案：
 >
-> *bootstrap* 使用的是栅格布局。栅格布局的实现原理，是通过定义容器大小，平分 *12* 份，再调整内外边距，最后结合媒体查询，就制作出了强大的响应式网格系统。
-
+> 响应式设计简而言之，就是一个网站能够兼容多个终端——而不是为每个终端做一个特定的版本。
+>
+> 优点：
+>
+> - 面对不同分辨率设备灵活性强
+> - 能够快捷解决多设备显示适应问题
+>
+> 缺点：
+>
+> 兼容各种设备工作量大，效率低下
+>
+> 代码累赘，会出现隐藏无用的元素，加载时间加长
+>
+> 其实这是一种折中性质的设计解决方案，多方面因素影响而达不到最佳效果
+>
+> 一定程度上改变了网站原有的布局结构，会出现用户混淆的情况
+>
+> 具体步骤：
+>
+> - 第一步：meta 标签
+>
+> 为了适应屏幕，多数的移动浏览器会把HTML网页缩放到设备屏幕的宽度。你可以使用meta标签的viewport属性来设置。下面的代码告诉浏览器使用设备屏幕宽度作为内容的宽度，并且忽视初始的宽度设置。这段代码写在 `<head>`里面
+>
+> ```
+> <meta name="viewport" content="width=device-width, initial-scale=1.0">
+> ```
+>
+> IE8及以下的浏览器不支持media query。你可以使用 media-queries.js 或 respond.js 。这样IE就能支持media query了。
+>
+> ```
+> <!--[if lt IE 9]> <script src="http://css3-mediaqueries-js.googlecode.com/svn/trunk/css3-mediaqueries.js"></script> <![endif]-->
+> ```
+>
+> - 第二步：HTML 结构
+>
+> 这个例子里面，有header、content、sidebar和footer等基本的网页布局。
+>
+> header 有固定的高180px，content 容器的宽是600px，sidebar的宽是300px。
+>
+> - 第三步：Media Queries
+>
+> CSS3 media query 响应式网页设计的关键。它像一个 if 语句，告诉浏览器如何根据特定的屏幕宽口来加载网页。
+>
+> 下面是一个媒体查询示例代码：
+>
+> ```js
+> @media screen and (max-width: 300px) {
+>     body {
+>         background-color:lightblue;
+>     }
+> }
+> ```
+>
+> 如果文档宽度小于 300 像素则修改背景演示(background-color)
 
 
 ### 41. 如何做响应式？
@@ -927,3 +978,9 @@
 > @media mediatype and|not|only (media feature) { CSS-Code;}
 > ```
 
+
+### 42. *bootstrap* 响应式的原理是什么
+
+> 参考答案：
+>
+> *bootstrap* 使用的是栅格布局。栅格布局的实现原理，是通过定义容器大小，平分 *12* 份，再调整内外边距，最后结合媒体查询，就制作出了强大的响应式网格系统。
