@@ -1067,3 +1067,148 @@
 >- display:none 设置不可见后不会再存在于文档流中，也就是说不会再占据空间
 >- visibility:hidden 仍然存在于文档流中，之前所占据的空间还存在
 
+
+
+### 49. div 怎么垂直居中
+
+>参考答案：
+>
+>div 垂直居中的方式比较多，常见的有下面 3 种：
+>
+>- 利用绝对定位实现的居中
+>- 利用flex垂直居中
+>- transform+relative实现的居中
+
+> 解析：
+>
+> 下面针对上面所列举的 3 种垂直居中的方式，给出对应的代码片段
+>
+> **利用绝对定位实现的居中**
+>
+> ```js
+> <!DOCTYPE html>
+> <html>
+>  <head>
+>      <meta charset="UTF-8">
+>      <title>居中</title>
+>      <style type="text/css">
+>          *{
+>              padding: 0px;
+>              margin: 0px;
+>          }
+>          body {
+>              height: 100%;
+>              overflow: hidden;
+>          }
+>          .father{
+>              position: absolute;
+>              height: 500px;
+>              width: 100%;
+>              background-color:#2AABD2;
+>          }
+>          .children{
+>              position: absolute;
+>              top: 50%;
+>              left: 50%;
+>              background-color: red;
+>              width: 100px; 
+>              height: 100px;
+>              margin: -50px 0 0 -50px;
+>          }
+>      </style>
+>  </head>
+>  <body>
+>      <div class="father">
+>          <div class="children">
+>          </div>
+>      </div>
+>  </body>
+> </html>
+> ```
+>
+> **利用flex垂直居中**
+>
+> ```js
+> <!DOCTYPE html>
+> <html>
+>  <head>
+>      <meta charset="UTF-8">
+>      <title>居中</title>
+>      <style type="text/css">
+>          *{
+>              padding: 0px;
+>              margin: 0px;
+>          }
+>          body {
+>              height: 100%;
+>              overflow: hidden;
+>          }
+>          .father{
+>              height: 500px;
+>              width: 100%;
+>              background-color:#2AABD2;
+>              display: flex;
+>              justify-content: center;/*实现水平居中*/
+>              align-items:center; /*实现垂直居中*/
+>          }
+>          .children{
+>              background-color: red;
+>              width: 100px; 
+>              height: 100px;
+>          }
+>      </style>
+>  </head>
+>  <body>
+>      <div class="father">
+>          <div class="children">
+>          </div>
+>      </div>
+>  </body>
+> </html>
+> ```
+>
+> **transform+relative实现的居中**
+>
+> ```js
+> <!DOCTYPE html>
+> <html>
+>  <head>
+>      <meta charset="UTF-8">
+>      <title>居中</title>
+>      <style type="text/css">
+>          *{
+>              padding: 0px;
+>              margin: 0px;
+>          }
+>          body {
+>              height: 100%;
+>              overflow: hidden;
+>          }
+>          .father{
+>              position: absolute;
+>              height: 500px;
+>              width: 100%;
+>              background-color:#2AABD2;
+>          }
+>          .children
+>          {
+>              width: 300px;
+>              height: 150px;
+>              background-color: #333333;
+> 
+>              position: relative;
+>              top: 50%;
+>              left: 50%;
+>              transform: translateX(-50%) translateY(-50%);
+>          }
+>      </style>
+>  </head>
+>  <body>
+>      <div class="father">
+>          <div class="children">
+>          </div>
+>      </div>
+>  </body>
+> </html>
+> ```
+
