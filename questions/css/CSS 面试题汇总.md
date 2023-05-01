@@ -1212,3 +1212,9 @@
 > </html>
 > ```
 
+### 56. 如何隐藏一个 DOM 元素
+>参考答案：
+>
+>display: none;
+>visibility: hidden;
+>opacity: 0;
