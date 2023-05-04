@@ -1286,3 +1286,79 @@
 > - *animation-direction* 规定动画是否在下一周期逆向地播放。默认是 *normal*。
 > - *animation-play-state* 规定动画是否正在运行或暂停。默认是 *running*。
 
+
+
+### 54. *display：inline-block* 在什么情况下会产生间隙？
+
+> 参考答案：
+>
+> **空隙产生的原因**
+>
+> 元素被当成行内元素排版的时候，元素之间的空白符（空格、回车换行等）都会被浏览器处理，根据 white-space 的处理方式（默认是 normal，合并多余空白），原来 HTML 代码中的回车换行被转成一个空白符，在字体不为 0 的情况下，空白符占据一定宽度，所以 inline-block 的元素之间就出现了空隙。
+>
+> 这些元素之间的间距会随着字体的大小而变化，例如：当行内元素 font-size:16px 时，间距为8px。
+>
+> 
+>
+> **解决空隙的办法**
+>
+> 1. 办法一：解决元素之间的空白符
+>
+> ```html
+> <!-- 将前一个标签结束符和后一个标签开始符写在同一行 -->
+> <div class="parent">
+>   <div class="child">child1
+>   </div><div class="child">child2
+>   </div>
+> </div>
+> <!-- 将所有子元素写在同一行 -->
+> <div class="parent">
+>   <div class="child">child1</div><div class="child">child2</div>
+> </div>
+> ```
+>
+> 缺点：代码的**可读性变差。**
+>
+> 
+>
+> 2. 方法二：为父元素中设置 font-size: 0，在子元素上重置正确的 font-size
+>
+> ```html
+> <div class="parent" style="font-size: 0px">  <div class="child" style="font-size: 16px">child1</div>  <div class="child" style="font-size: 16px">child2</div></div>
+> ```
+>
+> 缺点：inline-block 元素必须设定字体，不然行内元素中的字体不会显示。 增加了代码量。
+>
+> 
+>
+> 3. 方法三：为 inline-block 元素添加样式 float:left
+>
+> 缺点：**float布局会有高度塌陷**问题
+>
+> 
+>
+> 4. 方法四：设置子元素margin值为负数
+>
+> ```css
+> .parent .child + .child {
+>   margin-left: -2px
+> }
+> ```
+>
+> 缺点：元素之间间距的大小与上下文字体大小相关；并且同一大小的字体，元素之间的间距在不同浏览器下是不一样的。
+>
+> 如：font-size:16px时，Chrome下元素之间的间距为  8px,而 Firefox 下元素之间的间距为 4px。所以不同浏览器下 margin-right 的负值是不一样的，因此这个方法不通用。
+>
+> 注意：当 marigin-right 使用相对单位 em 来表示时，Chrome 下可以正常去除间距,而 Firefox 下元素之间有重叠。
+>
+> 
+>
+> 5. 方法五：最优解在这，设置父元素，display:table 和 word-spacing
+>
+> ```css
+> .parent{
+>   display: table;
+>   word-spacing:-1em; /*兼容其他浏览器，题主还未验证*/
+> }
+> ```
+
