@@ -1362,3 +1362,11 @@
 > }
 > ```
 
+
+
+### 55. *position* 和 *display、overflow* 发生重叠时会发生什么？
+
+> 参考答案：
+>
+> 浮动的行内变成块级元素，绝对定位的行内也会变成块级元素。绝对定位时浮动失效，top,bottom,left,right能改变位置。相邻普通流块级垂直方向margin叠压。浮动，inline-block，绝对定位不会和垂直方向其他元素margin叠压。BFC不会和子元素margin叠压。(absolute,fixed都是绝对定位)
+
