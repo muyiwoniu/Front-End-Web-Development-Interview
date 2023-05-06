@@ -1370,3 +1370,38 @@
 >
 > 浮动的行内变成块级元素，绝对定位的行内也会变成块级元素。绝对定位时浮动失效，top,bottom,left,right能改变位置。相邻普通流块级垂直方向margin叠压。浮动，inline-block，绝对定位不会和垂直方向其他元素margin叠压。BFC不会和子元素margin叠压。(absolute,fixed都是绝对定位)
 
+
+
+### 56. 什么是选择器？有哪些选择器？
+
+> 参考答案：
+>
+> 选择器决定将样式应用在哪个或哪些元素身上。
+>
+> - 元素选择器：例如 *div{…} p{...}*
+> - id 选择器： 例如 *#box{...}*
+> - 类选择器： 例如 *.box{...}*
+> - 属性选择器：*[href="#"]{...}*
+> - 通配：\*{...}
+> - 组合（并集）选择器：*div,p,a,.main{...}*
+> - 交集选择器：*input[type="text"]{...}*
+> - 后代选择器：*header nav{...}*
+> - 子级选择器： *ul>li{...}*
+> - 伪类选择器：
+>   - *:nth-child(num){...}*
+>   - *:nth-child(odd){...}*
+>   - *:nth-child(even){...}*
+>   - *:nth-of-type{...}*
+>   - *:first-child{...}*
+>   - *:last-child{...}*
+>   - *only-child{...}*
+>   - *a:link{...}*
+>   - *a:visited{...}*
+>   - *:hover{...}*
+>   - *a:active{...}*
+> - 伪元素选择器：
+>   - *::before{...}*
+>   - *::after{...}*
+>   - *::first-letter{...}*
+>   - *::first-line{...}*
+
