@@ -1405,3 +1405,13 @@
 >   - *::first-letter{...}*
 >   - *::first-line{...}*
 
+
+
+### 57. 什么是继承？*CSS* 中哪些属性可以继承？哪些不可以继承？
+
+> 参考答案：
+>
+> - 继承，指元素可以自动获得祖先元素的某些 *CSS* 属性。通常来说文本类的属性具有继承性。
+> - 文本类的样式可以继承：例如 *color、 font-size、 line-height、 font-family、 font-weight、 font-weight、 text-decoration、 letter-spacing、text-align* 等等
+> - *display、 margin、 padding、 border、 background、 position、 float* 等则不会被继承
+
