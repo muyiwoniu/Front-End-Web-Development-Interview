@@ -1415,3 +1415,13 @@
 > - 文本类的样式可以继承：例如 *color、 font-size、 line-height、 font-family、 font-weight、 font-weight、 text-decoration、 letter-spacing、text-align* 等等
 > - *display、 margin、 padding、 border、 background、 position、 float* 等则不会被继承
 
+
+
+### 58. 谈谈你对响应式的理解。
+
+> 参考答案：
+>
+> 响应式布局是 *Ethan Marcotte* 在2010年5月提出的一个概念。即页面的设计与开发应当根据用户行为，以及设备环境进行相应的响应与调整。能让一个网站兼容多个终端，展示出不同的结构样式，而不是为每个终端做一个特定的版本。
+>
+> 具体的实践方式可由多方面组成，包括使用 *flex* 布局、使用 *CSS3*  媒介查询 *media query* 实现。其特点在于灵活性较强，但缺点在于兼容性较差、工作量巨大、代码冗余、网页加载时间过长。
+
