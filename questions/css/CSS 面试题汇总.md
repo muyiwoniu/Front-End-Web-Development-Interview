@@ -1458,3 +1458,48 @@
 > - *cover*：此时会保持图像的纵横比并将图像缩放成将完全覆盖背景定位区域的最小大小。
 > - *contain*：此时会保持图像的纵横比并将图像缩放成将适合背景定位区域的最大大小。
 
+
+
+### 62. *transition、transform、animate* 的区别？
+
+> 参考答案：
+>
+> transition：过渡效果，它有4个属性：
+>
+> ```css
+> transition: property duration timing-function delay;
+> ```
+>
+> - property ：css属性的名称
+>
+> - duration ：多长时间完成
+>
+> - timing-function：转速曲线
+>
+> - delay：开始的时候。
+>
+> 
+>
+> transform： 应用于元素的 2D 或 3D 转换。这个属性允许你将元素旋转，缩放，移动，倾斜等。
+>
+> - 旋转：rotate
+> - 缩放：scale
+> - 移动：translate
+> - 倾斜：skew
+>
+> 
+>
+> animate：应用动画效果。语法如下：
+>
+> ```css
+> animation: name duration timing-function delay iteration-count direction fill-mode play-state;
+> ```
+>
+> - name ：定义的名称
+> - duration ：多长时间完成
+> - delay ：开始前多长的延迟
+> - iteration-count：播放几次
+> - direction ：指定是否应该轮流反向播放动画。
+> - fill-mode：结束的状态
+> - play-state：指定动画是否正在运行或已暂停。
+
