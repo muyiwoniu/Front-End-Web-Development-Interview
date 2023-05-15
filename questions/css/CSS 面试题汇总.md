@@ -1535,3 +1535,23 @@ D. margin 的参数值不能全部设置为 0px
 >
 > 选项 D，可以设置为 0px
 
+
+
+### 65. 以下代码中，属于相对定位的是
+
+A. `#b{width:100px; position:relative}`
+
+B. `#b{width:100px; position:static}`
+
+C. `#b{width:100px;}`
+
+D. `#b{width:100px; position:absolute}`
+
+> 参考答案：
+>
+> A
+
+> 解析：
+>
+> B 和 C 都是静态定位，D 是绝对定位
+
