@@ -1555,3 +1555,21 @@ D. `#b{width:100px; position:absolute}`
 >
 > B 和 C 都是静态定位，D 是绝对定位
 
+
+
+### 66. 以下选项中不能实现清除浮动的是（ ）
+
+A.  空 div
+
+B. hover 伪选择器
+
+C. clear 属性
+
+D. overflow 属性
+
+> 参考答案：
+>
+> B
+>
+> A、C、D 是常用的清除浮动的方式，B 是为元素添加 hover 效果
+
