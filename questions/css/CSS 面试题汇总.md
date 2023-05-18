@@ -1597,3 +1597,70 @@ D.  即使上面的层没有任何内容也会挡住下面的层，使下面的�
 >
 > 选项 D，如果当前层没有内容或者内容是透明的，是可以看到下面的层的内容的
 
+
+
+### 68. 有一个高度自适应的 div，里面有 2 个 div，一个高度 100px，希望另一个填满剩下的高度？（CSS 实现）
+
+> 参考答案：
+>
+> 方法一：利用定位
+>
+> ```html
+> <div class="main">
+> <div class="box1"></div>
+> <div class="box2"></div>
+> </div>
+> ```
+>
+> ```css
+> html,
+> body {
+> height: 100%;
+> margin: 0px;
+> padding: 0px;
+> }
+> 
+> .main {
+> position: relative;
+> height: 100%;
+> }
+> 
+> .box1 {
+> height: 100px;
+> background-color: red;
+> }
+> 
+> .box2 {
+> position: absolute;
+> width: 100%;
+> top: 100px;
+> bottom: 0px;
+> background-color: blue;
+> }
+> ```
+>
+> 方法二：利用计算属性*calc*
+>
+> ```css
+> html,
+> body {
+> height: 100%;
+> margin: 0px;
+> padding: 0px;
+> }
+> 
+> .main {
+> height: 100%;
+> }
+> 
+> .box1 {
+> height: 100px;
+> background-color: red;
+> }
+> 
+> .box2 {
+> height: calc(100% - 100px);
+> background-color: blue;
+> }
+> ```
+
