@@ -1679,10 +1679,30 @@ D.  即使上面的层没有任何内容也会挡住下面的层，使下面的�
 
 
 
-### 76. *position* 的值 *relative* 和 *absolute* 的定位原点是？
+### 70. *position* 的值 *relative* 和 *absolute* 的定位原点是？
 
 > 参考答案：
 >
 > - **absolute**：生成绝对定位的元素，定位原点是离自己这一级元素最近的一级 *position* 设置为 *absolute* 或者 *relative* 的父元素的左上角为原点的。
 > - **relative**：生成相对定位的元素，定位原点是元素本身所在位置。
+
+
+
+### 71. 当 margin-top、padding-top 的值是百分比时，分别是如何计算的？
+
+A. 相对父级元素的 height，相对自身的 height
+
+B. 相对最近父级块级元素的 height，相对自身的 height
+
+C. 相对父级元素的 width，相对自身的 width
+
+D. 相对最近父级块级元素的 width，相对最近父级块级元素的 width
+
+> 参考答案：
+>
+> D
+>
+> 可以对元素的margin设置百分数，百分数是相对于父元素的width计算，不管是margin-top/margin-bottom还是margin-left/margin-right。（padding同理）
+>
+> 如果没有为元素声明width，在这种情况下，元素框的总宽度包括外边距取决于父元素的width，这样可能得到“流式”页面，即元素的外边距会扩大或缩小以适应父元素的实际大小。如果对这个文档设置样式，使其元素使用百分数外边距，当用户修改浏览窗口的宽度时，外边距会随之扩大或缩小。
 
