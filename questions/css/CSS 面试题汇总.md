@@ -1771,3 +1771,19 @@ D. 相对最近父级块级元素的 width，相对最近父级块级元素的 w
 > 3. *scale(num, num)*: 放大或缩小元素。
 > 4. *skew(angle, angle)*: 围绕 X Y 轴进行转动。
 
+
+
+### 78. 谈一谈  *CSS3* 多列属性是什么？以及其使用场景
+
+> 参考答案：
+>
+> 多列布局是 *CSS3* 新增的一组属性，常用的属性如下：
+>
+> - *column-count: num*: 规定元素被分隔的列数。
+> - *column-gap: num*; 规定列之间的间隔。
+> - *column-rule: width style color*: 规定列之间的样式规则。
+>
+> 更多多列布局相关属性可以参阅：*https://www.runoob.com/css3/css3-multiple-columns.html*
+>
+> 应用场景：可以将文本内容设计成像报纸一样的多列布局。
+
