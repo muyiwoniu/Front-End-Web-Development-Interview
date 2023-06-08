@@ -1900,3 +1900,12 @@ D. 相对最近父级块级元素的 width，相对最近父级块级元素的 w
 >- 3个值： *margin {10px 20px 30px;}* 表示上  左右 下
 >- 3个值： *margin {10px 20px 30px 40px ;}* 表示上 右 下 左
 
+
+
+### 88. 处理长宽不固定的元素居中方案？
+
+>参考答案
+>
+>1. 使用 *flex-box*
+>2. *ele { position: absolute; top: 50%; left: 50%; transform:translate(-50%;-50%);}*
+
