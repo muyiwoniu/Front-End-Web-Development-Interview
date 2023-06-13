@@ -1964,3 +1964,16 @@ div{
 > - W3C 盒模型中的宽度: *width* + *padding* + *border* = 122*px*
 > - *IE* 盒模型中的宽度： 100*px*
 
+
+
+### 94. 两个相邻兄弟元素如代码所示，此时两个元素之间的间隔是多少？
+
+```markup
+<div style="margin-bottom: 20px;"></div>
+<div style="margin-top: 10px;"></div>
+```
+
+> 参考答案
+>
+> 20*px*，由于两个元素见发生了外边距塌陷，所以中间的间隔就是取其中较大的值。
+
