@@ -1985,3 +1985,17 @@ div{
 >
 > 使用 *outline* 或 *box-shadow* 都可以模拟出边框。
 
+
+
+### 96. 阅读代码，计算 ul 的高度。
+
+```markup
+ <ul style="overflow: hidden;">
+   <li style="height: 100px; float: left;"></li>
+ </ul>
+```
+
+> 参考答案
+>
+> *ul* 的高度为 100*px*，虽然子级 *li* 浮动会造成父元素 *ul* 的高度塌陷，但父元素触发了 *BFC*，所以高度可以自动找回。
+
