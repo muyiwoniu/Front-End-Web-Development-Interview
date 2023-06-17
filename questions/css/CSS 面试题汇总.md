@@ -2011,3 +2011,17 @@ div{
 > 4. *color: rgb(255, 0, 0);*
 > 5. *color: hsl(120, 100%, 50%);*
 
+
+
+### 98. 如何使用媒体查询实现视口宽度大于 320*px* 小于 640*px* 时 *div* 元素宽度变成 30%？
+
+>参考答案
+>
+>```css
+>@media screen and (min-width: 320px) and (max-width: 640px){
+> div{
+>    width: 30%;
+> }
+>}
+>```
+
