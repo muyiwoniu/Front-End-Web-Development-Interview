@@ -2056,3 +2056,11 @@ div{
 > 3. *width* *height* 不为 *auto*
 > 4. *zoom* 不为 *normal*
 
+
+
+### 102. 在定位属性 *position* 中，哪个值会脱离文档流?
+
+> 参考答案
+>
+> *absolute、fixed*。
+
