@@ -2041,3 +2041,18 @@ div{
 >
 >全局属性 *Global Attribute* 指全部元素都能使用的通用属性，与之对应的是局部属性 *Local Attribute* 。*class、contenteditable、onclick、data-* 都是全局属性。
 
+
+
+### 101. 什么是 *hasLayout*? 触发 *hasLayout* 会有什么后果？
+
+> 参考答案
+>
+> *hasLayout* 是微软的一个私有概念，类似于 *BFC* ，能够运行在早期的 *IE*6、7 当中，但在 *IE*8+ 已被抛弃。在早期 *IE* 浏览器中，元素会被分为：拥有布局（*hasLayout*）和没有布局，拥有布局的元素就可以控制自己内容的尺寸和位置，没有布局的元素需要由最近的拥有布局的祖先元素代劳。
+>
+> *IE6* 中很多 *bug* 都是由于元素没有布局所引起的，例如浮动元素会拥有双倍外边距。可以通过定义特定的属性来触发 *lasLayout*：
+>
+> 1. *float* 为 *left* 或 *right*
+> 2. *position* 为 *absolute*
+> 3. *width* *height* 不为 *auto*
+> 4. *zoom* 不为 *normal*
+
