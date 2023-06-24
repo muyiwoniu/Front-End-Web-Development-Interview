@@ -2064,3 +2064,26 @@ div{
 >
 > *absolute、fixed*。
 
+
+
+### 103. 假设视口的宽是 *70px*，高为 *50px*，执行下面代码后，*div* 元素的宽度为多少？
+
+```markup
+ <style>
+   section{
+     margin: 6px;
+   }
+   div{
+     width: 50vw;
+     height: 50vh;
+   }
+ </style>
+ <section>
+    <div></div>
+ </section>
+```
+
+> 参考答案
+>
+> *vw* 和 *vh* 单位，1*vw* 等于视口宽度的 1/100，1*vh* 等于视口高度的 1/100，即 1*vw* = 0.7*px*，1*vh* = 0.5*px*，0.7\*50 = 35*px*，0.5\*50 = 25*px* ，即 *div* 宽度为35*px*，高度25*px*。
+
