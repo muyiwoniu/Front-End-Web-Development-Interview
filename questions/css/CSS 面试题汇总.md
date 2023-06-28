@@ -2151,3 +2151,23 @@ div{
 >
 >*transparent* 关键字相当于 *rgba(0,0,0,0,)*，作为 *background* 的属性值仅仅是将元素的背景色设置为透明，而元素中的内容还可以被显示。*opacity* 则会将元素和内容当作一个整体，全部透明。
 
+
+
+### 109. 阅读代码分析 *p* 元素的字体大小。
+
+```markup
+ <style>
+   section{font-size: 32px;}
+   section>div{font-size: 50%;}
+ </style>
+ <section>
+    <div>
+     <p>lorem</p>
+   </div>
+ </section>
+```
+
+> 参考答案
+>
+> 16*px*，因为 *font-size* 具有继承性。
+
