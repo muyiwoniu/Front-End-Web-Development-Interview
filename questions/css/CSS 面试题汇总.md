@@ -2280,3 +2280,18 @@ div{
 >- 使用行高等于高的方式可以实现单行文字垂直居中
 >- 将 *display* 设置为 *inline-block* 可以实现多行文本居中
 
+
+
+### 120. 如何让 *Chrome* 支持小于 12px 的文字？
+
+>参考答案
+>
+>可以配合 *CSS3* 中的 *transform* 属性来实现，例如：
+>
+>```css
+>p{
+>font-size: 10px;
+>-webkit-transform: scale(0.8);
+>}
+>```
+
