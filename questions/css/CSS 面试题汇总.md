@@ -2329,3 +2329,29 @@ div{
 >
 >将一个页面涉及到的所有图片都包含到一张大图中去，然后利用 *CSS* 的 *background-image、background- repeat、background-position* 的组合进行背景定位。利用 *CSS Sprites* 能很好地减少网页的 *http* 请求，从而大大的提高页面的性能；还能减少图片的字节。
 
+
+
+### 125. 写出背景色渐变的 *CSS* 代码
+
+>参考答案
+>
+>**线性渐变**
+>
+>```css
+>background: linear-gradient(direction,color-stop1,color-stop2,...);
+>```
+>
+>- direction：用角度值指定渐变的方向(或角度)；
+>
+>- color-stop1,color-stop2,...：用于指定渐变的起止颜色
+>
+>**径向渐变**
+>
+>CSS 径向颜色渐变(Radial Gradients)跟线性渐变(linear gradients)不一样，它不是沿着一个方向渐变，而是以一个点为中心，向四周辐射渐变。
+>
+>语法：
+>
+>```css
+>background-image: radial-gradient([<position> || <angle>]，[<shape> || <size>]，<stop>，<stop>，<stop>)
+>```
+
