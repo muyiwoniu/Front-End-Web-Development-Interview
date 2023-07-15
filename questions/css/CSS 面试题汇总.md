@@ -2355,3 +2355,14 @@ div{
 >background-image: radial-gradient([<position> || <angle>]，[<shape> || <size>]，<stop>，<stop>，<stop>)
 >```
 
+
+
+### 134. 写出添加下划线的 *CSS* 代码
+
+> 参考答案
+>
+> 一般有两种方法：
+>
+> - 通过 *CSS* 下划线代码：text-decoration: underline 来设置文字下划线。
+> - 通过设置 *div* 的 *border* 实现效果
+
