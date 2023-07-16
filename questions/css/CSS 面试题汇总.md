@@ -2366,3 +2366,27 @@ div{
 > - 通过 *CSS* 下划线代码：text-decoration: underline 来设置文字下划线。
 > - 通过设置 *div* 的 *border* 实现效果
 
+
+
+### 135. 写出让对象顺时针旋转 90 度的 CSS 代码（最好附带动画效果）
+
+> 参考答案
+>
+> 顺时针旋转可以使用 *CSS3* 新增的 *transform* 属性，属性值对应 *rotate(90deg)*，如果要附带动画效果，那么可以添加 *transition* 过渡。下面是一段示例代码：
+>
+> ```html
+> <div></div>
+> ```
+>
+> ```css
+> div{
+> width: 100px;
+> height: 100px;
+> background-color: red;
+> transition: all 1s;
+> }
+> div:hover{
+> transform: rotate(90deg);
+> }
+> ```
+
