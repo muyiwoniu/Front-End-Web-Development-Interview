@@ -2357,7 +2357,7 @@ div{
 
 
 
-### 134. 写出添加下划线的 *CSS* 代码
+### 126. 写出添加下划线的 *CSS* 代码
 
 > 参考答案
 >
@@ -2368,7 +2368,7 @@ div{
 
 
 
-### 135. 写出让对象顺时针旋转 90 度的 CSS 代码（最好附带动画效果）
+### 127. 写出让对象顺时针旋转 90 度的 CSS 代码（最好附带动画效果）
 
 > 参考答案
 >
@@ -2389,4 +2389,26 @@ div{
 > transform: rotate(90deg);
 > }
 > ```
+
+
+### 128. CSS 优先级顺序正确的是（ ）
+
+A.  !important > class > id > tag
+
+B.  !important > tag > class > id
+
+C.  !important  > id > class > tag
+
+D.  Class > !important > id > tag
+
+> 参考答案
+>
+> 选 C
+
+> 解析：
+>
+> 关于 *CSS* 选择器的优先级，具体可以参阅下图：
+>
+> <img src="https://xiejie-typora.oss-cn-chengdu.aliyuncs.com/2021-11-03-10806.png" alt="image-20210816194530798" style="zoom:50%;" />
+
 
