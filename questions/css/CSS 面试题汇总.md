@@ -2412,3 +2412,25 @@ D.  Class > !important > id > tag
 > <img src="https://xiejie-typora.oss-cn-chengdu.aliyuncs.com/2021-11-03-10806.png" alt="image-20210816194530798" style="zoom:50%;" />
 
 
+
+### 129. 如何产生带有正方形项目的列表
+
+A. *type:square*
+
+B. *type:2*
+
+C. *list-style-type:square*
+
+D. *list-type:square*
+
+> 参考答案
+>
+> C
+
+> 解析：
+>
+> *CSS list-style-type* 属性可以设置不同的列表样式
+>
+> 具体属性值可以参阅：*https://www.w3school.com.cn/cssref/pr_list-style-type.asp*
+
+
