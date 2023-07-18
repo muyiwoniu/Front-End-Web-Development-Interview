@@ -2434,3 +2434,101 @@ D. *list-type:square*
 > 具体属性值可以参阅：*https://www.w3school.com.cn/cssref/pr_list-style-type.asp*
 
 
+
+### 130. 手写一个三栏布局，要求：垂直三栏布局，所有两栏宽度固定，中间自适应
+
+> 参考答案：
+>
+> 这是一道经典的面试题，实现的方式很多，这里列举两种。
+>
+> 方法一：*flexbox* 的解决方案
+>
+> ```html
+> <body>
+>  <!-- flexbox解决方案 -->
+>  <section class="layout flexbox">
+> 
+>      <article class="left-center-right">
+>          <div class="left"></div>
+>          <div class="center">
+>              <h1>flexbox的解决方案</h1>
+>              <p>1.这是布局的中间部分</p>
+>              <p>2.这是布局的中间部分</p>
+>          </div>
+>          <div class="right"></div>
+>      </article>
+>  </section>
+> </body>
+> ```
+>
+> ```css
+> <style>
+> .layout.flexbox {
+> margin-top: 140px;
+> }
+> 
+> .layout.flexbox .left-center-right {
+> display: flex;
+> }
+> 
+> .layout.flexbox .left {
+> width: 300px;
+> background: red;
+> }
+> 
+> .layout.flexbox .center {
+> flex: 1;
+> background: yellow;
+> }
+> 
+> .layout.flexbox .right {
+> width: 300px;
+> background: blue;
+> }
+> </style>
+> ```
+>
+> 方法二：网格布局解决方案
+>
+> ```html
+> <body>
+>  <!-- 网格布局的解决方案     -->
+>  <section class="layout grid">
+> 
+>      <article class="left-center-right">
+>          <div class="left"></div>
+>          <div class="center">
+>              <h1>网格布局的解决方案</h1>
+>              <p>1.这是布局的中间部分</p>
+>              <p>2.这是布局的中间部分</p>
+>          </div>
+>          <div class="right"></div>
+>      </article>
+>  </section>
+> </body>
+> ```
+>
+> ```css
+> <style>
+> .layout.grid .left-center-right {
+> display: grid;
+> width: 100%;
+> grid-template-rows: 100px;
+> grid-template-columns: 300px auto 300px;
+> }
+> 
+> .layout.grid .left {
+> background: red;
+> }
+> 
+> .layout.grid .center {
+> background: yellow;
+> }
+> 
+> .layout.grid .right {
+> background: blue;
+> }
+> </style>
+> ```
+
+
