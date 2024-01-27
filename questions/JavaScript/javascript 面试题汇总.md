@@ -123,3 +123,32 @@ function foo(p) {
 > 这道题考查的是 *ES6* 新增的声明变量关键字 *let* 以及暂时性死区的知识。*let* 和以前的 *var* 关键字不一样，无法在 *let* 声明变量之前访问到该变量，所以在 *typeof b* 的地方就会报错。
 
 
+
+### 4. 描述下列代码的执行结果
+
+```js
+class Foo {
+    constructor(arr) { 
+        this.arr = arr; 
+    }
+    bar(n) {
+        return this.arr.slice(0, n);
+    }
+}
+var f = new Foo([0, 1, 2, 3]);
+console.log(f.bar(1));
+console.log(f.bar(2).splice(1, 1));
+console.log(f.arr);
+```
+
+> 参考答案：
+>
+> [ 0 ]
+> [ 1 ]
+> [ 0, 1, 2, 3 ]
+
+> 解析：
+>
+> 主要考察的是数组相关的知识。 *f* 对象上面有一个属性 *arr*，*arr* 的值在初始化的时候会被初始化为 *[0, 1, 2, 3]*，之后就完全是考察数组以及数组方法的使用了。
+
+
