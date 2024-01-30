@@ -197,3 +197,30 @@ console.log(a === 2 || 1 && b === 3 || 4);
 > 考察的是逻辑运算符。在 || 里面，只要有一个为真，后面的直接短路，都不用去计算。所以 *a === 2* 得到 *true* 之后直接短路了，返回 *true*。
 
 
+
+### 7. 描述下列代码的执行结果
+
+```js
+export class ButtonWrapper {
+    constructor(domBtnEl, hash) {
+        this.domBtnEl = domBtnEl;
+        this.hash = hash;
+        this.bindEvent();
+    }
+    bindEvent() {
+        this.domBtnEl.addEventListener('click', this.clickEvent, false);
+    }
+    detachEvent() {
+        this.domBtnEl.removeEventListener('click', this.clickEvent);
+    }
+    clickEvent() {
+        console.log(`The hash of the button is: ${this.hash}`);
+    }
+}
+```
+
+> 参考答案：
+>
+> 上面的代码导出了一个 *ButtonWrapper* 类，该类在被实例化的时候，实例化对象上面有两个属性，分别是 *domBtnEl* 和 *hash*，*domBtnEl* 是一个 *DOM* 节点，之后为这个 *domBtnEl* 绑定了点击事件，点击后打印出 *The hash of the button is: hash* 那句话。*detachEvent* 是移除点击事件，当调用实例化对象的 *detachEvent* 方法时，点击事件就会被移除。
+
+
