@@ -224,3 +224,16 @@ export class ButtonWrapper {
 > 上面的代码导出了一个 *ButtonWrapper* 类，该类在被实例化的时候，实例化对象上面有两个属性，分别是 *domBtnEl* 和 *hash*，*domBtnEl* 是一个 *DOM* 节点，之后为这个 *domBtnEl* 绑定了点击事件，点击后打印出 *The hash of the button is: hash* 那句话。*detachEvent* 是移除点击事件，当调用实例化对象的 *detachEvent* 方法时，点击事件就会被移除。
 
 
+
+### 8. 箭头函数有哪些特点
+
+> 参考答案：
+>
+> 1. 更简洁的语法，例如
+>    - 只有一个形参就不需要用括号括起来
+>    - 如果函数体只有一行，就不需要放到一个块中
+>    - 如果 *return* 语句是函数体内唯一的语句，就不需要 *return* 关键字
+> 2. 箭头函数没有自己的 *this*，*arguments*，*super*
+> 3. 箭头函数 *this* 只会从自己的作用域链的上一层继承 *this*。
+
+
