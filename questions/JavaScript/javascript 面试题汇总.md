@@ -237,3 +237,167 @@ export class ButtonWrapper {
 > 3. 箭头函数 *this* 只会从自己的作用域链的上一层继承 *this*。
 
 
+
+### 9. 说一说类的继承
+
+> 参考答案：
+>
+> 继承是面向对象编程中的三大特性之一。
+>
+> *JavaScript* 中的继承经过不断的发展，从最初的对象冒充慢慢发展到了今天的圣杯模式继承。
+>
+> 其中最需要掌握的就是**伪经典继承**和**圣杯模式**的继承。
+>
+> 很长一段时间，JS 继承使用的都是**组合继承**。这种继承也被称之为伪经典继承，该继承方式综合了原型链和盗用构造函数的方式，将两者的优点集中了起来。
+>
+> 组合继承弥补了之前原型链和盗用构造函数这两种方式各自的不足，是 *JavaScript* 中使用最多的继承方式。
+>
+> 组合继承最大的问题就是效率问题。最主要就是父类的构造函数始终会被调用两次：一次是在创建子类原型时调用，另一次是在子类构造函数中调用。
+>
+> 本质上，子类原型最终是要包含超类对象的所有实例属性，子类构造函数只要在执行时重写自己的原型就行了。
+>
+> 圣杯模式的继承解决了这一问题，其基本思路就是不通过调用父类构造函数来给子类原型赋值，而是取得父类原型的一个副本，然后将返回的新对象赋值给子类原型。
+
+> 解析：该题主要考察就是对 *js* 中的继承是否了解，以及常见的继承的形式有哪些。最常用的继承就是**组合继承**（伪经典继承）和圣杯模式继承。下面附上 *js* 中这两种继承模式的详细解析。
+>
+> 下面是一个组合继承的例子：
+>
+> ```js
+> // 基类
+> var Person = function (name, age) {
+>     this.name = name;
+>     this.age = age;
+> }
+> Person.prototype.test = "this is a test";
+> Person.prototype.testFunc = function () {
+>     console.log('this is a testFunc');
+> }
+> 
+> // 子类
+> var Student = function (name, age, gender, score) {
+>     Person.apply(this, [name, age]); // 盗用构造函数
+>     this.gender = gender;
+>     this.score = score;
+> }
+> Student.prototype = new Person(); // 改变 Student 构造函数的原型对象
+> Student.prototype.testStuFunc = function () {
+>     console.log('this is a testStuFunc');
+> }
+> 
+> // 测试
+> var zhangsan = new Student("张三", 18, "男", 100);
+> console.log(zhangsan.name); // 张三
+> console.log(zhangsan.age); // 18
+> console.log(zhangsan.gender); // 男
+> console.log(zhangsan.score); // 100
+> console.log(zhangsan.test); // this is a test
+> zhangsan.testFunc(); // this is a testFunc
+> zhangsan.testStuFunc(); // this is a testStuFunc
+> ```
+>
+>  
+>
+> 在上面的例子中，我们使用了组合继承的方式来实现继承，可以看到无论是基类上面的属性和方法，还是子类自己的属性和方法，都得到了很好的实现。
+>
+> 
+>
+> 但是在组合继承中存在效率问题，比如在上面的代码中，我们其实调用了两次 *Person*，产生了两组 *name* 和 *age* 属性，一组在原型上，一组在实例上。
+>
+> 
+>
+> 也就是说，我们在执行 *Student.prototype = new Person( )* 的时候，我们是想要 *Person* 原型上面的方法，属性是不需要的，因为属性之后可以通过 *Person.apply(this, [name, age])* 拿到，但是当你 *new Person( )* 的时候，会实例化一个 *Person* 对象出来，这个对象上面，属性和方法都有。
+>
+> 
+>
+> 圣杯模式的继承解决了这一问题，其基本思路就是不通过调用父类构造函数来给子类原型赋值，而是取得父类原型的一个副本，然后将返回的新对象赋值给子类原型。
+>
+> 
+>
+> 下面是一个圣杯模式的示例：
+>
+> 
+>
+> ```js
+> // target 是子类，origin 是基类
+> // target ---> Student, origin ---> Person
+> function inherit(target, origin) {
+>     function F() { }; // 没有任何多余的属性
+> 
+>     // origin.prototype === Person.prototype, origin.prototype.constructor === Person 构造函数
+>     F.prototype = origin.prototype;
+> 
+>     // 假设 new F() 出来的对象叫小 f
+>     // 那么这个 f 的原型对象 === F.prototype === Person.prototype
+>     // 那么 f.constructor === Person.prototype.constructor === Person 的构造函数
+>     target.prototype = new F();
+> 
+>     // 而 f 这个对象又是 target 对象的原型对象
+>     // 这意味着 target.prototype.constructor === f.constructor
+>     // 所以 target 的 constructor 会指向 Person 构造函数
+> 
+>     // 我们要让子类的 constructor 重新指向自己
+>     // 若不修改则会发现 constructor 指向的是父类的构造函数
+>     target.prototype.constructor = target;
+> }
+> 
+> 
+> // 基类
+> var Person = function (name, age) {
+>     this.name = name;
+>     this.age = age;
+> }
+> Person.prototype.test = "this is a test";
+> Person.prototype.testFunc = function () {
+>     console.log('this is a testFunc');
+> }
+> 
+> 
+> // 子类
+> var Student = function (name, age, gender, score) {
+>     Person.apply(this, [name, age]);
+>     this.gender = gender;
+>     this.score = score;
+> }
+> inherit(Student, Person); // 使用圣杯模式实现继承
+> // 在子类上面添加方法
+> Student.prototype.testStuFunc = function () {
+>     console.log('this is a testStuFunc');
+> }
+> 
+> // 测试
+> var zhangsan = new Student("张三", 18, "男", 100);
+> 
+> console.log(zhangsan.name); // 张三
+> console.log(zhangsan.age); // 18
+> console.log(zhangsan.gender); // 男
+> console.log(zhangsan.score); // 100
+> console.log(zhangsan.test); // this is a test
+> zhangsan.testFunc(); // this is a testFunc
+> zhangsan.testStuFunc(); // this is a testStuFunc
+> ```
+>
+> 在上面的代码中，我们在 *inherit* 方法中创建了一个中间层，之后让 *F* 的原型和父类的原型指向同一地址，再让子类的原型指向这个 *F* 的实例化对象来实现了继承。
+>
+> 
+>
+> 这样我们的继承，属性就不会像之前那样实例对象上一份，原型对象上一份，拥有两份。圣杯模式继承是目前 *js* 继承的最优解。
+>
+> 
+>
+> 最后我再画个图帮助大家理解，如下图：
+>
+> 
+>
+> 组合模式（伪经典模式）下的继承示意图：
+>
+> <img src="https://xiejie-typora.oss-cn-chengdu.aliyuncs.com/2021-08-08-022111.png" alt="image-20210808102111003" style="zoom:50%;" />
+>
+> 圣杯模式下的继承示意图：
+>
+> 
+>
+> <img src="https://xiejie-typora.oss-cn-chengdu.aliyuncs.com/2021-08-08-021304.png" alt="image-20210808101303180" style="zoom:50%;" />
+>
+> 
+
+
