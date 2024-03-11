@@ -824,3 +824,27 @@ export class ButtonWrapper {
 > - 对象没有赋值的属性，该属性的值为 *undefined*。
 > - 函数没有返回值时，默认返回 *undefined*。
 
+
+
+### 29. 写一个函数判断变量类型
+
+> 参考答案：
+>
+> ```js
+> function getType(data){
+>     let type = typeof data;
+>     if(type !== "object"){
+>         return type
+>     }
+>     return Object.prototype.toString.call(data).replace(/^\[object (\S+)\]$/,'$1')
+> }
+> function Person(){}
+> console.log(getType(1)); // number
+> console.log(getType(true)); // boolean
+> console.log(getType([1,2,3])); // Array
+> console.log(getType(/abc/)); // RegExp
+> console.log(getType(new Date)); // Date
+> console.log(getType(new Person)); // Object
+> console.log(getType({})); // Object
+> ```
+
