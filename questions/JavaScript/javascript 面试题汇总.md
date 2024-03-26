@@ -1081,4 +1081,25 @@ console.log(10);
 
 
 
+### 40. 说说 *instanceof* 原理，并回答下面的题目（美团 19年）
+
+```js
+function A(){}
+function B(){}
+A.prototype = new B(); 
+let a = new A(); 
+console.log(a instanceof B) // true of false ?
+```
+
+> 参考答案：
+>
+> 答案为 *true*。
+>
+> *instanceof* 原理：
+>
+> *instanceof*  用于检测一个对象是否为某个构造函数的实例。
+>
+> 例如：*A instanceof B*
+> *instanceof* 用于检测对象 *A* 是不是 *B* 的实例，而检测是基于原型链进行查找的，也就是说 *B* 的 *prototype* 有没有在对象 *A* 的\__*proto*__ 原型链上，如果有就返回 *true*，否则返回 *false*
+
 
