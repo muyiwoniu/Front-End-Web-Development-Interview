@@ -1220,3 +1220,21 @@ console.log(a instanceof B) // true of false ?
 
 
 
+### 46. 柯里化？（搜狗）
+
+> 参考答案：
+>
+> 柯里化，英语全称 *Currying*，是把接受多个参数的函数变换成接受一个单一参数（最初函数的第一个参数）的函数，并且返回接受余下的参数而且返回结果的新函数的技术。
+>
+> 举个例子，就是把原本：
+>
+> *function(arg1,arg2)* 变成 *function(arg1)(arg2)*
+> *function(arg1,arg2,arg3)* 变成 *function(arg1)(arg2)(arg3)*
+> *function(arg1,arg2,arg3,arg4)* 变成 *function(arg1)(arg2)(arg3)(arg4)*
+>
+> 总而言之，就是将：
+>
+> *function(arg1,arg2,…,argn)* 变成 *function(arg1)(arg2)…(argn)*
+
+
+
