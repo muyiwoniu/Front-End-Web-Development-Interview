@@ -1274,3 +1274,38 @@ console.log(a instanceof B) // true of false ?
 
 
 
+### 49. 浏览器事件循环和 *node* 事件循环（搜狗）
+
+> 参考答案：
+>
+> 1. 浏览器中的 *Event Loop*
+>
+> 事件循环中的异步队列有两种：*macro*（宏任务）队列和 *micro*（微任务）队列。**宏任务队列可以有多个，微任务队列只有一个**。
+>
+> - 常见的 *macro-task* 比如：*setTimeout、setInterval、 setImmediate、script*（整体代码）、 *I/O* 操作、*UI* 渲染等。
+> - 常见的 *micro-task* 比如: *process.nextTick、new Promise( ).then*(回调)、*MutationObserver*(*html5* 新特性) 等。
+>
+> 当某个宏任务执行完后,会查看是否有微任务队列。如果有，先执行微任务队列中的所有任务，如果没有，会读取宏任务队列中排在最前的任务，执行宏任务的过程中，遇到微任务，依次加入微任务队列。栈空后，再次读取微任务队列里的任务，依次类推。
+>
+> 2. *Node* 中的事件循环
+>
+> *Node* 中的 *Event Loop* 和浏览器中的是完全不相同的东西。*Node.js* 采用 *V8* 作为 *js* 的解析引擎，而 *I/O* 处理方面使用了自己设计的 *libuv*，*libuv* 是一个基于事件驱动的跨平台抽象层，封装了不同操作系统一些底层特性，对外提供统一的 *API*，事件循环机制也是它里面的实现。
+>
+> *Node.JS* 的事件循环分为 *6* 个阶段：
+>
+> - *timers* 阶段：这个阶段执行 *timer*（ *setTimeout、setInterval* ）的回调
+> - *I/O callbacks* 阶段：处理一些上一轮循环中的少数未执行的 *I/O* 回调
+> - *idle、prepare* 阶段：仅 *Node.js* 内部使用
+> - *poll* 阶段：获取新的 *I/O* 事件, 适当的条件下 *Node.js* 将阻塞在这里
+> - *check* 阶段：执行 *setImmediate( )* 的回调
+> - *close callbacks* 阶段：执行 *socket* 的 *close* 事件回调
+>
+> *Node.js* 的运行机制如下:
+>
+> - *V8* 引擎解析 *JavaScript* 脚本。
+> - 解析后的代码，调用 *Node API*。
+> - *libuv* 库负责 *Node API* 的执行。它将不同的任务分配给不同的线程，形成一个 *Event Loop*（事件循环），以异步的方式将任务的执行结果返回给 *V8* 引擎。
+> - *V8* 引擎再将结果返回给用户。
+
+
+
