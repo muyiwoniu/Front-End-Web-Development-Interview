@@ -1351,4 +1351,40 @@ console.log(a instanceof B) // true of false ?
 
 
 
+### 52. *Promise*
+
+> 参考答案：
+>
+> *Promise* 是异步编程的一种解决方案，比传统的解决方案——回调函数和事件——更合理且更强大。它最早由社区提出并实现，*ES6*将其写进了语言标准，统一了用法，并原生提供了*Promise*对象。
+>
+> **特点**
+>
+> 1. 对象的状态不受外界影响 （*3* 种状态）
+>
+>    - *Pending* 状态（进行中）
+>
+>    - *Fulfilled* 状态（已成功）
+>    - *Rejected* 状态（已失败）
+>
+> 2. 一旦状态改变就不会再变 （两种状态改变：成功或失败）
+>
+>    - *Pending* -> *Fulfilled*
+>    - *Pending* -> *Rejected*
+>
+> **用法**
+>
+> ```js
+> var promise = new Promise(function(resolve, reject){
+>     // ... some code
+>     
+>     if (/* 异步操作成功 */) {
+>         resolve(value);
+>     } else {
+>         reject(error);
+>     }
+> })
+> ```
+
+
+
 
