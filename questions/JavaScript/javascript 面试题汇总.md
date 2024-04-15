@@ -1387,4 +1387,40 @@ console.log(a instanceof B) // true of false ?
 
 
 
+### 53. 实现一个函数,对一个url进行请求,失败就再次请求,超过最大次数就走失败回调,任何一次成功都走成功回调
+
+> 参考答案：
+>
+> 示例代码如下：
+>
+> ```js
+> /**
+>     @params url: 请求接口地址;
+>     @params body: 设置的请求体;
+>     @params succ: 请求成功后的回调
+>     @params error: 请求失败后的回调
+>     @params maxCount: 设置请求的数量
+> */
+> function request(url, body, succ, error, maxCount = 5) {
+>     return fetch(url, body)
+>         .then(res => succ(res))
+>         .catch(err => {
+>             if (maxCount <= 0) return error('请求超时');
+>             return request(url, body, succ, error, --maxCount);
+>         });
+> }
+> 
+> // 调用请求函数
+> request('https://java.some.com/pc/reqCount', { method: 'GET', headers: {} },
+>     (res) => {
+>         console.log(res.data);
+>     },
+>     (err) => {
+>         console.log(err);
+>     })
+> 
+> ```
+
+
+
 
