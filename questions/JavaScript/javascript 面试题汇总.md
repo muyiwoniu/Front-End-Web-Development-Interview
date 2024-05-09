@@ -1613,5 +1613,15 @@ try {
 
 
 
+### 61. 数据的基础类型（原始类型）有哪些
+
+>参考答案：
+>
+>*JavaScript* 中的基础数据类型，一共有 *7* 种：
+>
+>*string，symbol，number，boolean，undefined，null*，*bigInt*
+
+
+
 
 
