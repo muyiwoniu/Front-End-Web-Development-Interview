@@ -1635,5 +1635,40 @@ try {
 
 
 
+### 63. 对变量进行类型判断的方式有哪些
+
+> 参考答案：
+>
+> 常用的方法有 *4* 种：
+>
+> 1. *typeof*
+>
+> *typeof* 是一个操作符，其右侧跟一个一元表达式，并返回这个表达式的数据类型。返回的结果用该类型的字符串(全小写字母)形式表示，包括以下 *7* 种：*number、boolean、symbol、string、object、undefined、function* 等。
+>
+> 2. *instanceof*
+>
+> *instanceof* 是用来判断 *A* 是否为 *B* 的实例，表达式为：*A instanceof B*，如果 *A* 是 *B* 的实例，则返回 *true*,否则返回 *false*。 在这里需要特别注意的是：*instanceof* 检测的是原型。
+>
+> 3. *constructor*
+>
+> 当一个函数 *F* 被定义时，*JS* 引擎会为 *F* 添加 *prototype* 原型，然后再在 *prototype* 上添加一个 *constructor* 属性，并让其指向 *F* 的引用。
+>
+> 4. *toString*
+>
+> *toString( )* 是 *Object* 的原型方法，调用该方法，默认返回当前对象的 *[[Class]]* 。这是一个内部属性，其格式为 *[object Xxx]* ，其中 *Xxx* 就是对象的类型。
+>
+> 对于 *Object* 对象，直接调用 *toString( )* 就能返回 *[object Object]* 。而对于其他对象，则需要通过 *call / apply* 来调用才能返回正确的类型信息。例如：
+>
+> ```js
+> Object.prototype.toString.call('') ;  // [object String]
+> Object.prototype.toString.call(1) ;   // [object Number]
+> Object.prototype.toString.call(true) ;// [object Boolean]
+> Object.prototype.toString.call(Symbol());//[object Symbol]
+> Object.prototype.toString.call(undefined) ;// [object Undefined]
+> Object.prototype.toString.call(null) ;// [object Null]
+> ```
+
+
+
 
 
