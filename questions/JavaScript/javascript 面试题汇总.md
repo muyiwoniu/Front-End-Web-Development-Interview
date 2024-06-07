@@ -1705,4 +1705,40 @@ try {
 
 
 
+### 65. 引用类型有哪些，有什么特点
+
+>参考答案：
+>
+>JS 中七种内置类型（*null，undefined，boolean，number，string，symbol，object*）又分为两大类型
+>
+>两大类型：
+>
+>- 基本类型： `null`，`undefined`，`boolean`，`number`，`string`，`symbol`
+>- 引用类型Object： `Array` ，`Function`， `Date`， `RegExp`等
+>
+><img src="https://xiejie-typora.oss-cn-chengdu.aliyuncs.com/2021-08-13-073833.png" alt="image-20210813153833385" style="zoom:50%;" />
+>
+>基本类型和引用类型的主要区别有以下几点：
+>
+>**存放位置：**
+>
+>- 基本数据类型：基本类型值在内存中占据固定大小，直接存储在**栈内存**中的数据
+>- 引用数据类型：引用类型在栈中存储了指针，这个指针指向堆内存中的地址，真实的数据存放在**堆内存**里。
+>
+><img src="https://xiejie-typora.oss-cn-chengdu.aliyuncs.com/2021-08-13-074040.png" alt="image-20210813154040287" style="zoom:50%;" />
+>
+>**值的可变性：**
+>
+>- 基本数据类型： 值不可变，*javascript* 中的原始值（*undefined、null*、布尔值、数字和字符串）是不可更改的
+>
+>- 引用数据类型：引用类型是可以直接改变其值的
+>
+>**比较：**
+>
+>- 基本数据类型： 基本类型的比较是值的比较，只要它们的值相等就认为他们是相等的
+>
+>- 引用数据类型： 引用数据类型的比较是引用的比较，看其的引用是否指向同一个对象
+
+
+
 
